@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小学生英语学习乐园</title>
+  <style>
+    :root {
+      --ink: #24313f;
+      --muted: #607181;
+      --paper: #ffffff;
+      --line: #dce6ef;
+      --sky: #dff4ff;
+      --mint: #dcfce7;
+      --peach: #ffe4d2;
+      --lemon: #fff4bd;
+      --rose: #ffe1eb;
+      --blue: #2563eb;
+      --green: #16a34a;
+      --orange: #f97316;
+      --pink: #db2777;
+      --shadow: 0 14px 30px rgba(40, 67, 92, .14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 8%, #fff7cc 0 10%, transparent 11%),
+        radial-gradient(circle at 88% 16%, #d7f8ff 0 12%, transparent 13%),
+        linear-gradient(180deg, #f8fdff, #fff8f1);
+      min-height: 100vh;
+    }
+
+    button, input, select { font: inherit; }
+
+    .app {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items: stretch;
+      min-height: 250px;
+      margin-bottom: 16px;
+    }
+
+    .hero-main {
+      border-radius: 18px;
+      background: linear-gradient(135deg, #e0f2fe, #fef3c7 52%, #ffe4e6);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "ABC";
+      position: absolute;
+      right: 24px;
+      bottom: -20px;
+      font-size: 92px;
+      font-weight: 900;
+      color: rgba(37, 99, 235, .10);
+      letter-spacing: 0;
+    }
+
+    .hero-main h1 {
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.12;
+      letter-spacing: 0;
+      max-width: 720px;
+    }
+
+    .hero-main p {
+      margin: 12px 0 0;
+      color: #475569;
+      font-size: 17px;
+      max-width: 720px;
+    }
+
+    .score-panel {
+      border-radius: 18px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      display: grid;
+      align-content: center;
+      gap: 12px;
+    }
+
+    .score-number {
+      font-size: 52px;
+      font-weight: 900;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .progress {
+      height: 14px;
+      background: #e8eef6;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      transition: width .25s ease;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px 10px;
+      cursor: pointer;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    .tab.active {
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: var(--blue);
+    }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 18px rgba(40, 67, 92, .08);
+    }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-12 { grid-column: span 12; }
+
+    h2, h3 {
+      margin: 0 0 10px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h2 { font-size: 26px; }
+    h3 { font-size: 20px; }
+
+    .word-card {
+      min-height: 214px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .emoji {
+      font-size: 54px;
+      line-height: 1;
+    }
+
+    .word {
+      font-size: 28px;
+      font-weight: 900;
+      color: #1e293b;
+    }
+
+    .cn {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 13px;
+      cursor: pointer;
+      background: var(--blue);
+      color: white;
+      font-weight: 800;
+      min-height: 42px;
+    }
+
+    .btn.secondary {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #dbe5ee;
+    }
+
+    .btn.green { background: var(--green); }
+    .btn.orange { background: var(--orange); }
+    .btn.pink { background: var(--pink); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 99px;
+      padding: 6px 10px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      color: #475569;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .challenge {
+      min-height: 310px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .question-emoji {
+      font-size: 76px;
+      width: 120px;
+      height: 120px;
+      display: grid;
+      place-items: center;
+      background: var(--lemon);
+      border-radius: 24px;
+      border: 1px solid #f5dd79;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      gap: 10px;
+      width: min(460px, 100%);
+    }
+
+    .choice {
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 20px;
+      min-height: 58px;
+    }
+
+    .choice:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .feedback {
+      min-height: 32px;
+      font-weight: 900;
+      color: var(--green);
+    }
+
+    .sentence-builder {
+      display: grid;
+      gap: 12px;
+    }
+
+    .word-bank, .answer-line {
+      min-height: 76px;
+      border: 2px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-content: flex-start;
+      background: #fbfdff;
+    }
+
+    .token {
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .chat {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .teacher {
+      width: 110px;
+      height: 110px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, #fef3c7, #fbcfe8);
+      display: grid;
+      place-items: center;
+      font-size: 60px;
+      border: 1px solid #f5cde0;
+    }
+
+    .chat-box {
+      display: grid;
+      gap: 10px;
+    }
+
+    input {
+      width: 100%;
+      border: 2px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 48px;
+      outline: none;
+    }
+
+    .reply {
+      min-height: 72px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .daily-plan {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .plan-item {
+      min-height: 112px;
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .plan-item b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--blue);
+    }
+
+    .tiny {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-12 {
+        grid-column: span 12;
+      }
+
+      .daily-plan {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .chat {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero-main h1 {
+        font-size: 30px;
+      }
+
+      .tabs, .choice-grid, .daily-plan {
+        grid-template-columns: 1fr;
+      }
+
+      .app {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <div class="hero-main">
+        <span class="pill">小学生英语 · 网络学习版</span>
+        <h1>开心英语学习乐园</h1>
+        <p>单词卡片、听力发音、趣味答题、句子拼拼看、英语老师互动。适合小学低中年级在家练习，也适合老师课堂投屏。</p>
+      </div>
+      <aside class="score-panel">
+        <div class="tiny">今日积分</div>
+        <div class="score-number"><span id="score">0</span></div>
+        <div class="progress" aria-label="积分进度"><span id="progressBar"></span></div>
+        <div id="badgeText">完成 30 分获得“英语小星星”。</div>
+      </aside>
+    </header>
+
+    <nav class="tabs" aria-label="学习模块">
+      <button class="tab active" data-target="words">单词卡</button>
+      <button class="tab" data-target="quiz">趣味挑战</button>
+      <button class="tab" data-target="sentence">句子拼拼看</button>
+      <button class="tab" data-target="teacher">互动老师</button>
+      <button class="tab" data-target="plan">每日计划</button>
+    </nav>
+
+    <section id="words" class="section active">
+      <div class="grid" id="wordGrid"></div>
+    </section>
+
+    <section id="quiz" class="section">
+      <div class="grid">
+        <div class="card span-7 challenge">
+          <span class="pill">看图选英文</span>
+          <div class="question-emoji" id="quizEmoji">🍎</div>
+          <h2 id="quizQuestion">这个单词的英文是什么？</h2>
+          <div class="choice-grid" id="choiceGrid"></div>
+          <div class="feedback" id="quizFeedback"></div>
+          <button class="btn secondary" id="nextQuiz">下一题</button>
+        </div>
+        <div class="card span-5">
+          <h3>学习小提示</h3>
+          <p>先点“听发音”，再跟读 3 遍。答错没关系，系统会继续鼓励你。</p>
+          <ul>
+            <li>看图想中文意思。</li>
+            <li>听英文发音。</li>
+            <li>大声跟读。</li>
+            <li>再选择答案。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="sentence" class="section">
+      <div class="grid">
+        <div class="card span-7 sentence-builder">
+          <span class="pill">把单词点成一句话</span>
+          <h2 id="sentenceCn">我喜欢苹果。</h2>
+          <div class="word-bank" id="wordBank"></div>
+          <div class="answer-line" id="answerLine"></div>
+          <div class="feedback" id="sentenceFeedback"></div>
+          <div class="btn-row">
+            <button class="btn green" id="checkSentence">检查句子</button>
+            <button class="btn secondary" id="resetSentence">重新拼</button>
+            <button class="btn orange" id="newSentence">换一句</button>
+          </div>
+        </div>
+        <div class="card span-5">
+          <h3>句型积木</h3>
+          <ul>
+            <li>I like ... 我喜欢……</li>
+            <li>This is ... 这是……</li>
+            <li>I see ... 我看见……</li>
+            <li>It is ... 它是……</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="teacher" class="section">
+      <div class="card">
+        <h2>和英语老师互动</h2>
+        <div class="chat">
+          <div class="teacher" aria-label="英语老师">🎓</div>
+          <div class="chat-box">
+            <input id="studentInput" placeholder="输入一个英文单词或一句话，例如：I like apples.">
+            <div class="btn-row" style="justify-content:flex-start">
+              <button class="btn pink" id="sendTeacher">发送给老师</button>
+              <button class="btn secondary" id="speakInput">读出我输入的英文</button>
+            </div>
+            <div class="reply" id="teacherReply">老师在这里等你。试着输入一个单词吧。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="plan" class="section">
+      <div class="card">
+        <h2>每日 15 分钟学习计划</h2>
+        <div class="daily-plan">
+          <div class="plan-item" style="background:var(--sky)"><b>第 1 步：听</b>听 6 个单词，每个跟读 3 遍。</div>
+          <div class="plan-item" style="background:var(--mint)"><b>第 2 步：选</b>完成 5 道看图选英文题。</div>
+          <div class="plan-item" style="background:var(--peach)"><b>第 3 步：拼</b>拼 2 个简单句子。</div>
+          <div class="plan-item" style="background:var(--rose)"><b>第 4 步：说</b>对老师说 1 句英文。</div>
+        </div>
+        <p class="tiny">家长提示：鼓励孩子大声开口，不要只追求答对。每天短时间、高频率练习更有效。</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const words = [
+      { emoji: "🍎", en: "Apple", cn: "苹果", color: "var(--peach)" },
+      { emoji: "🍌", en: "Banana", cn: "香蕉", color: "var(--lemon)" },
+      { emoji: "🐶", en: "Dog", cn: "小狗", color: "var(--sky)" },
+      { emoji: "🐱", en: "Cat", cn: "小猫", color: "var(--rose)" },
+      { emoji: "📚", en: "Book", cn: "书", color: "var(--mint)" },
+      { emoji: "🖊️", en: "Pen", cn: "钢笔", color: "var(--sky)" },
+      { emoji: "☀️", en: "Sun", cn: "太阳", color: "var(--lemon)" },
+      { emoji: "⚽", en: "Ball", cn: "球", color: "var(--mint)" }
+    ];
+
+    const sentences = [
+      { cn: "我喜欢苹果。", answer: ["I", "like", "apples"], bank: ["apples", "I", "like", "dog"] },
+      { cn: "这是一只猫。", answer: ["This", "is", "a", "cat"], bank: ["cat", "a", "This", "is", "book"] },
+      { cn: "我看见一只小狗。", answer: ["I", "see", "a", "dog"], bank: ["see", "dog", "I", "a", "sun"] },
+      { cn: "它是一本书。", answer: ["It", "is", "a", "book"], bank: ["book", "is", "It", "a", "ball"] }
+    ];
+
+    let score = 0;
+    let quizIndex = 0;
+    let currentSentence = 0;
+    let answerTokens = [];
+
+    const scoreEl = document.getElementById("score");
+    const progressBar = document.getElementById("progressBar");
+    const badgeText = document.getElementById("badgeText");
+
+    function updateScore(points) {
+      score += points;
+      scoreEl.textContent = score;
+      progressBar.style.width = `${Math.min(100, score / 60 * 100)}%`;
+      if (score >= 60) badgeText.textContent = "太棒了！你已经是“英语小达人”。";
+      else if (score >= 30) badgeText.textContent = "恭喜获得“英语小星星”，继续加油。";
+      else badgeText.textContent = "完成 30 分获得“英语小星星”。";
+    }
+
+    function speak(text, lang = "en-US") {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      utterance.rate = .86;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
+        document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.target).classList.add("active");
+      });
+    });
+
+    function renderWords() {
+      const grid = document.getElementById("wordGrid");
+      grid.innerHTML = "";
+      words.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card span-3 word-card";
+        card.style.background = item.color;
+        card.innerHTML = `
+          <div class="emoji">${item.emoji}</div>
+          <div class="word">${item.en}</div>
+          <div class="cn">${item.cn}</div>
+          <div class="btn-row">
+            <button class="btn">听发音</button>
+            <button class="btn secondary">我会读</button>
+          </div>
+        `;
+        const [speakBtn, knowBtn] = card.querySelectorAll("button");
+        speakBtn.addEventListener("click", () => speak(item.en));
+        knowBtn.addEventListener("click", () => {
+          updateScore(2);
+          knowBtn.textContent = "已加 2 分";
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function shuffle(list) {
+      return [...list].sort(() => Math.random() - .5);
+    }
+
+    function renderQuiz() {
+      const item = words[quizIndex % words.length];
+      const choices = shuffle([item.en, ...shuffle(words.filter(w => w.en !== item.en)).slice(0, 3).map(w => w.en)]);
+      document.getElementById("quizEmoji").textContent = item.emoji;
+      document.getElementById("quizQuestion").textContent = `“${item.cn}” 的英文是什么？`;
+      document.getElementById("quizFeedback").textContent = "";
+      const grid = document.getElementById("choiceGrid");
+      grid.innerHTML = "";
+      choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.className = "choice";
+        btn.textContent = choice;
+        btn.addEventListener("click", () => {
+          if (choice === item.en) {
+            document.getElementById("quizFeedback").textContent = "答对啦！奖励 10 分。";
+            speak(item.en);
+            updateScore(10);
+          } else {
+            document.getElementById("quizFeedback").textContent = `差一点，正确答案是 ${item.en}。`;
+            speak(item.en);
+          }
+        });
+        grid.appendChild(btn);
+      });
+    }
+
+    document.getElementById("nextQuiz").addEventListener("click", () => {
+      quizIndex += 1;
+      renderQuiz();
+    });
+
+    function renderSentence() {
+      const item = sentences[currentSentence % sentences.length];
+      answerTokens = [];
+      document.getElementById("sentenceCn").textContent = item.cn;
+      document.getElementById("sentenceFeedback").textContent = "";
+      const bank = document.getElementById("wordBank");
+      const answer = document.getElementById("answerLine");
+      bank.innerHTML = "";
+      answer.innerHTML = "";
+      shuffle(item.bank).forEach(word => {
+        const token = document.createElement("button");
+        token.className = "token";
+        token.textContent = word;
+        token.addEventListener("click", () => {
+          answerTokens.push(word);
+          token.remove();
+          const answerToken = document.createElement("button");
+          answerToken.className = "token";
+          answerToken.textContent = word;
+          answerToken.addEventListener("click", () => renderSentence());
+          answer.appendChild(answerToken);
+        });
+        bank.appendChild(token);
+      });
+    }
+
+    document.getElementById("checkSentence").addEventListener("click", () => {
+      const item = sentences[currentSentence % sentences.length];
+      const joined = answerTokens.join(" ");
+      const correct = item.answer.join(" ");
+      if (joined === correct) {
+        document.getElementById("sentenceFeedback").textContent = `拼对啦：${correct}. 奖励 15 分。`;
+        speak(correct);
+        updateScore(15);
+      } else {
+        document.getElementById("sentenceFeedback").textContent = `再试一次。正确句子是：${correct}.`;
+        speak(correct);
+      }
+    });
+
+    document.getElementById("resetSentence").addEventListener("click", renderSentence);
+    document.getElementById("newSentence").addEventListener("click", () => {
+      currentSentence += 1;
+      renderSentence();
+    });
+
+    document.getElementById("sendTeacher").addEventListener("click", () => {
+      const input = document.getElementById("studentInput").value.trim();
+      const reply = document.getElementById("teacherReply");
+      if (!input) {
+        reply.textContent = "先输入一个英文单词或一句话吧。";
+        return;
+      }
+      const messages = [
+        `Great job! “${input}” 读得很棒。请再大声说一遍。`,
+        `Wonderful! 我听到了：${input}。你可以试试把它放进一个句子里。`,
+        `Nice try! 今天你又进步了一点点。跟我读：${input}.`
+      ];
+      const text = messages[Math.floor(Math.random() * messages.length)];
+      reply.textContent = text;
+      speak(input, "en-US");
+      updateScore(5);
+    });
+
+    document.getElementById("speakInput").addEventListener("click", () => {
+      const input = document.getElementById("studentInput").value.trim();
+      if (input) speak(input, "en-US");
+    });
+
+    renderWords();
+    renderQuiz();
+    renderSentence();
+  </script>
+</body>
+</html>
