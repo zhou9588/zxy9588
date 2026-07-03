@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>三上电子课本童声配音版</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c2b3d;
+      --muted: #5d718a;
+      --blue: #1677ff;
+      --blue-soft: #dceeff;
+      --green: #17a668;
+      --pink: #cc3e91;
+      --line: #cfe0f2;
+      --paper: #ffffff;
+      --wash: #f6fbff;
+      --shadow: 0 18px 44px rgba(31, 74, 126, .12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #eef7ff 0%, #fffaf2 100%);
+      color: var(--ink);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding: 18px;
+    }
+
+    .topbar {
+      max-width: 1440px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 38px);
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .status-pill {
+      min-width: 132px;
+      padding: 10px 14px;
+      border: 1px solid #b8d8ff;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: #1556a9;
+      text-align: center;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .layout {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) 360px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, .9);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      padding: 14px;
+      position: sticky;
+      top: 14px;
+      max-height: calc(100vh - 28px);
+      overflow: auto;
+    }
+
+    .section-title {
+      margin: 8px 2px 10px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .unit-list,
+    .page-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .unit-button,
+    .page-button {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .unit-button {
+      padding: 10px 12px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .unit-button small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .unit-button.active,
+    .page-button.active {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      color: #1556a9;
+      box-shadow: inset 0 0 0 1px var(--blue);
+    }
+
+    .page-list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .page-button {
+      min-height: 42px;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .page-button.has-audio::after {
+      content: "";
+      display: block;
+      width: 6px;
+      height: 6px;
+      margin: 1px auto 0;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .viewer {
+      padding: 14px;
+    }
+
+    .toolbar,
+    .reader-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar {
+      margin-bottom: 12px;
+    }
+
+    .action-button {
+      min-height: 46px;
+      padding: 10px 16px;
+      border: 1px solid #b8d8ff;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .action-button.primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .action-button.green {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .page-indicator {
+      min-width: 118px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: var(--wash);
+      border: 1px solid var(--line);
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .book-stage {
+      display: flex;
+      justify-content: center;
+      background: #eef5fc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      overflow: auto;
+    }
+
+    .book-stage img {
+      width: min(100%, 820px);
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 12px 30px rgba(30, 62, 98, .16);
+      background: #fff;
+    }
+
+    .reader {
+      padding: 18px;
+      position: sticky;
+      top: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #fef0f7;
+      border: 1px solid #ffd0e7;
+      color: #a31568;
+      font-weight: 900;
+    }
+
+    .reader h2 {
+      margin: 14px 0 8px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .reader .cn {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 700;
+    }
+
+    .script-lines {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .script-line {
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--wash);
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.45;
+      cursor: pointer;
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+
+    .script-line:hover {
+      border-color: var(--blue);
+      background: #edf6ff;
+      transform: translateY(-1px);
+    }
+
+    .empty-note {
+      padding: 14px;
+      border: 1px dashed #bfd2e8;
+      border-radius: 8px;
+      color: var(--muted);
+      background: #fbfdff;
+      line-height: 1.65;
+      font-weight: 700;
+    }
+
+    .focus-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 16px;
+    }
+
+    .practice-tip {
+      margin: 12px 0 0;
+      color: #7a4c8f;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.4;
+    }
+
+    .tag {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #ffd0e7;
+      background: #fff6fb;
+      color: var(--pink);
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+
+    .tag:hover,
+    .tag:focus-visible {
+      border-color: var(--pink);
+      background: #ffe8f5;
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .hint {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 230px minmax(0, 1fr);
+      }
+
+      .reader {
+        grid-column: 1 / -1;
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        padding: 10px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+
+      .unit-list {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .page-list {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .reader h2 {
+        font-size: 24px;
+      }
+
+      .script-line {
+        font-size: 18px;
+      }
+
+      .action-button {
+        flex: 1 1 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <h1>三上电子课本童声配音版</h1>
+        <p>一边看课本页面，一边听核心单元高清朗读。优先播放 AI mp3，未生成时自动退回浏览器朗读。</p>
+      </div>
+      <div class="status-pill" id="voiceStatus">准备朗读</div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel sidebar">
+        <div class="section-title">单元导航</div>
+        <div class="unit-list" id="unitList"></div>
+        <div class="section-title">页码</div>
+        <div class="page-list" id="pageList"></div>
+      </aside>
+
+      <section class="panel viewer">
+        <div class="toolbar">
+          <button class="action-button" id="prevPage" type="button">上一页</button>
+          <div class="page-indicator" id="pageIndicator">第 1 页</div>
+          <button class="action-button" id="nextPage" type="button">下一页</button>
+        </div>
+        <div class="book-stage">
+          <img id="pageImage" alt="课本页面" src="">
+        </div>
+      </section>
+
+      <aside class="panel reader">
+        <span class="badge" id="unitBadge">Welcome</span>
+        <h2 id="pageTitle">本页标题</h2>
+        <p class="cn" id="cnGuide"></p>
+        <div class="script-lines" id="scriptLines"></div>
+        <div class="practice-tip">点粉色重点词，优先播放高清 mp3；没有 mp3 时慢速读两遍。</div>
+        <div class="focus-tags" id="focusTags"></div>
+        <div class="reader-actions">
+          <button class="action-button primary" id="readPage" type="button">高清朗读</button>
+          <button class="action-button" id="pauseSpeech" type="button">暂停</button>
+          <button class="action-button green" id="readFocus" type="button">重点句跟读</button>
+        </div>
+        <p class="hint">提示：页面会优先播放已生成的 AI mp3；如果某一句或某个词还没有音频，会自动使用浏览器清晰朗读补位。</p>
+      </aside>
+    </main>
+  </div>
+
+  <script src="data/book.js"></script>
+  <script>
+    const config = window.BOOK_CONFIG;
+    const state = {
+      page: Number(localStorage.getItem("dub-book-page")) || 7,
+      voices: [],
+      queue: [],
+      queueIndex: 0,
+      paused: false,
+      lastSpoken: "",
+      audio: new Audio(),
+      audioFallback: null
+    };
+
+    const els = {
+      unitList: document.getElementById("unitList"),
+      pageList: document.getElementById("pageList"),
+      pageImage: document.getElementById("pageImage"),
+      pageIndicator: document.getElementById("pageIndicator"),
+      unitBadge: document.getElementById("unitBadge"),
+      pageTitle: document.getElementById("pageTitle"),
+      cnGuide: document.getElementById("cnGuide"),
+      scriptLines: document.getElementById("scriptLines"),
+      focusTags: document.getElementById("focusTags"),
+      readPage: document.getElementById("readPage"),
+      pauseSpeech: document.getElementById("pauseSpeech"),
+      readFocus: document.getElementById("readFocus"),
+      prevPage: document.getElementById("prevPage"),
+      nextPage: document.getElementById("nextPage"),
+      voiceStatus: document.getElementById("voiceStatus")
+    };
+
+    function unitFor(page) {
+      return config.units.find((unit) => page >= unit.from && page <= unit.to) || config.units[0];
+    }
+
+    function curatedFor(page) {
+      return config.curated[String(page)] || null;
+    }
+
+    function stopSpeech() {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+      state.audio.pause();
+      state.audio.removeAttribute("src");
+      state.audio.load();
+      state.audioFallback = null;
+      state.queue = [];
+      state.queueIndex = 0;
+      state.paused = false;
+      els.pauseSpeech.textContent = "暂停";
+      els.voiceStatus.textContent = "准备朗读";
+    }
+
+    function clampPage(page) {
+      return Math.min(config.totalPages, Math.max(1, page));
+    }
+
+    function goToPage(page) {
+      stopSpeech();
+      state.page = clampPage(page);
+      localStorage.setItem("dub-book-page", String(state.page));
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderUnits() {
+      els.unitList.innerHTML = "";
+      const activeUnit = unitFor(state.page);
+      config.units.forEach((unit) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `unit-button${unit.id === activeUnit.id ? " active" : ""}`;
+        button.innerHTML = `${unit.title}<small>${unit.from}-${unit.to} 页</small>`;
+        button.addEventListener("click", () => goToPage(unit.from));
+        els.unitList.appendChild(button);
+      });
+    }
+
+    function renderPages() {
+      els.pageList.innerHTML = "";
+      for (let page = 1; page <= config.totalPages; page += 1) {
+        const button = document.createElement("button");
+        button.type = "button";
+        const hasAudio = Boolean(curatedFor(page));
+        button.className = `page-button${page === state.page ? " active" : ""}${hasAudio ? " has-audio" : ""}`;
+        button.textContent = page;
+        button.title = hasAudio ? `第 ${page} 页：有校对朗读` : `第 ${page} 页：图片查看`;
+        button.addEventListener("click", () => goToPage(page));
+        els.pageList.appendChild(button);
+      }
+    }
+
+    function renderReader() {
+      const unit = unitFor(state.page);
+      const item = curatedFor(state.page);
+      els.unitBadge.textContent = unit.title;
+      els.pageTitle.textContent = item ? item.title : `第 ${state.page} 页`;
+      els.cnGuide.textContent = item ? item.cn : "本页暂无校对配音文本，可先查看课本图片；后续可以继续补充朗读脚本。";
+      els.scriptLines.innerHTML = "";
+      els.focusTags.innerHTML = "";
+
+      if (item) {
+        item.lines.forEach((line, index) => {
+          const row = document.createElement("div");
+          row.className = "script-line";
+          row.textContent = line;
+          row.title = "点击听这一句高清音频";
+          row.addEventListener("click", () => playLineAudio(line, index));
+          els.scriptLines.appendChild(row);
+        });
+        item.focus.forEach((word) => {
+          const tag = document.createElement("button");
+          tag.type = "button";
+          tag.className = "tag";
+          tag.textContent = word;
+          tag.title = `点击跟读：${word}`;
+          tag.setAttribute("aria-label", `点击跟读 ${word}`);
+          tag.addEventListener("click", () => speakPracticeWord(word));
+          els.focusTags.appendChild(tag);
+        });
+      } else {
+        const note = document.createElement("div");
+        note.className = "empty-note";
+        note.textContent = "绿色小点代表已有校对朗读的页面。建议先从 Welcome unit 和 Unit 1-6 的绿色页开始听读。";
+        els.scriptLines.appendChild(note);
+      }
+    }
+
+    function render() {
+      renderUnits();
+      renderPages();
+      renderReader();
+      els.pageIndicator.textContent = `第 ${state.page} / ${config.totalPages} 页`;
+      els.pageImage.src = config.imageFor(state.page);
+      els.pageImage.alt = `三上电子课本第 ${state.page} 页`;
+      els.prevPage.disabled = state.page <= 1;
+      els.nextPage.disabled = state.page >= config.totalPages;
+    }
+
+    function loadVoices() {
+      if (!("speechSynthesis" in window)) return;
+      state.voices = window.speechSynthesis.getVoices();
+      if (state.voices.length) {
+        const englishVoice = pickVoice("en-US");
+        els.voiceStatus.textContent = englishVoice ? `高清音频优先 / 备用：${englishVoice.name}` : "高清音频优先";
+      }
+    }
+
+    function pickVoice(lang) {
+      if (!state.voices.length) loadVoices();
+      const voices = state.voices;
+      const sameLang = voices.filter((voice) => voice.lang && voice.lang.toLowerCase().startsWith(lang.toLowerCase().slice(0, 2)));
+      const clearVoice = sameLang.find((voice) => (
+        /google us english|microsoft (jenny|aria|zira|ava|emma)|samantha|victoria|karen|moira|serena|tessa|susan|allison/i
+      ).test(`${voice.name} ${voice.voiceURI}`));
+      if (clearVoice) return clearVoice;
+      const localEnglish = sameLang.find((voice) => voice.localService);
+      if (localEnglish) return localEnglish;
+      return sameLang[0] || voices[0] || null;
+    }
+
+    function makeUtterance(segment) {
+      const utterance = new SpeechSynthesisUtterance(segment.text);
+      utterance.lang = segment.lang;
+      utterance.voice = pickVoice(segment.lang);
+      if (segment.kind === "zh") {
+        utterance.rate = 0.9;
+        utterance.pitch = 1.03;
+      } else if (segment.kind === "word") {
+        utterance.rate = 0.78;
+        utterance.pitch = 1.02;
+      } else if (segment.kind === "sentence") {
+        utterance.rate = 0.82;
+        utterance.pitch = 1.02;
+      } else {
+        utterance.rate = 0.86;
+        utterance.pitch = 1.02;
+      }
+      utterance.volume = 1;
+      return utterance;
+    }
+
+    function speakNext() {
+      if (state.queueIndex >= state.queue.length) {
+        state.queue = [];
+        state.queueIndex = 0;
+        state.paused = false;
+        els.pauseSpeech.textContent = "暂停";
+        els.voiceStatus.textContent = "朗读完成";
+        return;
+      }
+      const segment = state.queue[state.queueIndex];
+      const utterance = makeUtterance(segment);
+      utterance.onstart = () => {
+        if (state.lastSpoken) {
+          els.voiceStatus.textContent = state.lastSpoken;
+        } else if (segment.kind === "zh") {
+          els.voiceStatus.textContent = "中文提示";
+        } else if (segment.kind === "word") {
+          els.voiceStatus.textContent = `单词跟读：${segment.text}`;
+        } else {
+          els.voiceStatus.textContent = "清晰英语朗读";
+        }
+      };
+      utterance.onend = () => {
+        state.queueIndex += 1;
+        speakNext();
+      };
+      utterance.onerror = () => {
+        state.queueIndex += 1;
+        speakNext();
+      };
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakSegments(segments, label = "") {
+      if (!("speechSynthesis" in window)) {
+        els.voiceStatus.textContent = "浏览器不支持";
+        return;
+      }
+      state.audio.pause();
+      window.speechSynthesis.cancel();
+      state.queue = segments;
+      state.queueIndex = 0;
+      state.paused = false;
+      state.lastSpoken = label;
+      els.pauseSpeech.textContent = "暂停";
+      speakNext();
+    }
+
+    function slugifyAudioName(text) {
+      return String(text)
+        .trim()
+        .toLowerCase()
+        .replace(/['’]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "audio";
+    }
+
+    function pageAudioPath(page) {
+      return `assets/audio/pages/page-${String(page).padStart(3, "0")}.mp3`;
+    }
+
+    function lineAudioPath(page, index) {
+      return `assets/audio/lines/page-${String(page).padStart(3, "0")}-line-${String(index + 1).padStart(2, "0")}.mp3`;
+    }
+
+    function wordAudioPath(word) {
+      return `assets/audio/words/${slugifyAudioName(word)}.mp3`;
+    }
+
+    function audioCandidates(src) {
+      const list = [src];
+      if (src.endsWith(".mp3")) {
+        list.push(src.replace(/\.mp3$/, ".wav"));
+        list.push(src.replace(/\.mp3$/, ".m4a"));
+      }
+      return list;
+    }
+
+    function playAudioWithFallback(src, label, fallback) {
+      stopSpeech();
+      state.audioFallback = fallback;
+      const sources = audioCandidates(src);
+
+      function trySource(index) {
+        if (index >= sources.length) {
+          const next = state.audioFallback;
+          state.audioFallback = null;
+          els.voiceStatus.textContent = "未找到本地音频，使用备用朗读";
+          if (typeof next === "function") next();
+          return;
+        }
+
+        state.audio = new Audio(sources[index]);
+        state.audio.preload = "auto";
+        state.audio.onplay = () => {
+          els.voiceStatus.textContent = label;
+        };
+        state.audio.onended = () => {
+          els.voiceStatus.textContent = "本地音频播放完成";
+          state.audioFallback = null;
+        };
+        state.audio.onerror = () => trySource(index + 1);
+        const attempt = state.audio.play();
+        if (attempt && typeof attempt.catch === "function") {
+          attempt.catch(() => trySource(index + 1));
+        }
+      }
+
+      trySource(0);
+    }
+
+    function speakPracticeWord(word) {
+      playAudioWithFallback(wordAudioPath(word), `高清单词：${word}`, () => speakSegments([
+        { text: word, lang: "en-US", kind: "word" },
+        { text: word, lang: "en-US", kind: "word" }
+      ], `单词跟读：${word}`));
+    }
+
+    function playLineAudio(line, index) {
+      playAudioWithFallback(lineAudioPath(state.page, index), `高清句子：${line}`, () => speakSegments([
+        { text: line, lang: "en-US", kind: "sentence" }
+      ], `句子跟读：${line}`));
+    }
+
+    function readCurrentPage() {
+      const item = curatedFor(state.page);
+      if (!item) {
+        speakSegments([{ text: "本页暂无校对配音文本，可以先看课本图片。", lang: "zh-CN", kind: "zh" }], "中文提示");
+        return;
+      }
+      const segments = [
+        { text: item.cn, lang: "zh-CN", kind: "zh" },
+        ...item.lines.map((line) => ({ text: line, lang: "en-US", kind: "sentence" }))
+      ];
+      playAudioWithFallback(pageAudioPath(state.page), `高清整页：第 ${state.page} 页`, () => speakSegments(segments, "清晰英语朗读"));
+    }
+
+    function readFocus() {
+      const item = curatedFor(state.page);
+      if (!item) {
+        speakSegments([{ text: "本页还没有重点句跟读。", lang: "zh-CN", kind: "zh" }], "中文提示");
+        return;
+      }
+      speakSegments(item.focus.map((word) => ({ text: word, lang: "en-US", kind: "word" })), "重点词跟读");
+    }
+
+    function togglePause() {
+      if (!("speechSynthesis" in window)) return;
+      if (state.paused) {
+        if (state.audio.src && state.audio.paused) state.audio.play();
+        window.speechSynthesis.resume();
+        state.paused = false;
+        els.pauseSpeech.textContent = "暂停";
+        els.voiceStatus.textContent = "继续朗读";
+      } else {
+        if (state.audio.src && !state.audio.paused) state.audio.pause();
+        window.speechSynthesis.pause();
+        state.paused = true;
+        els.pauseSpeech.textContent = "继续";
+        els.voiceStatus.textContent = "已暂停";
+      }
+    }
+
+    els.prevPage.addEventListener("click", () => goToPage(state.page - 1));
+    els.nextPage.addEventListener("click", () => goToPage(state.page + 1));
+    els.readPage.addEventListener("click", readCurrentPage);
+    els.readFocus.addEventListener("click", readFocus);
+    els.pauseSpeech.addEventListener("click", togglePause);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") goToPage(state.page - 1);
+      if (event.key === "ArrowRight") goToPage(state.page + 1);
+      if (event.key === " ") {
+        event.preventDefault();
+        readCurrentPage();
+      }
+    });
+
+    if ("speechSynthesis" in window) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    } else {
+      els.voiceStatus.textContent = "无朗读支持";
+    }
+
+    render();
+  </script>
+</body>
+</html>
