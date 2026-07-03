@@ -390,7 +390,7 @@
 
     .hanzi-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
@@ -399,13 +399,71 @@
       background: #fff;
       border-radius: 16px;
       padding: 14px;
-      min-height: 128px;
+      min-height: 220px;
+      display: grid;
+      gap: 10px;
     }
 
     .hanzi strong {
       font-size: 34px;
       color: var(--pink);
       margin-right: 8px;
+    }
+
+    .link-route {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .route-step {
+      border-radius: 14px;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1e3a8a;
+      padding: 10px;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .hanzi-main {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hanzi-main strong {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: #fdf2f8;
+      border: 1px solid #fbcfe8;
+      margin: 0;
+    }
+
+    .linked-english {
+      border-radius: 14px;
+      border: 1px solid #bbf7d0;
+      background: #f0fdf4;
+      padding: 10px;
+    }
+
+    .linked-english b {
+      color: #15803d;
+      font-size: 20px;
+    }
+
+    .mini-task {
+      border-left: 4px solid var(--orange);
+      background: #fff7ed;
+      border-radius: 12px;
+      padding: 9px;
+      color: #7c2d12;
+      font-weight: 750;
     }
 
     .sentence-box {
@@ -995,14 +1053,54 @@
 
     function renderChinese() {
       const t = theme();
-      document.getElementById("chineseIntro").textContent = `${t.title}：语文部分重点练字词、拼音、组词和表达。`;
-      document.getElementById("hanziGrid").innerHTML = t.chinese.map(([char, pinyin, word, sentence]) => `
-        <div class="hanzi">
-          <p><strong>${char}</strong><span>${pinyin}</span></p>
-          <p><b>${word}</b></p>
-          <p class="muted">${sentence}</p>
+      document.getElementById("chineseIntro").textContent = `${t.title}：先认语文字词，再连到英语词和句子，最后做中文表达。`;
+      document.getElementById("hanziGrid").innerHTML = `
+        <div class="span-12">
+          <div class="link-route">
+            <div class="route-step">1 认汉字</div>
+            <div class="route-step">2 连英语</div>
+            <div class="route-step">3 说句子</div>
+          </div>
         </div>
-      `).join("");
+      ` + t.chinese.map(([char, pinyin, word, sentence], index) => {
+        const linked = t.english[index % t.english.length];
+        const [en, phonetic, cn, emoji] = linked;
+        const englishSentence = exampleSentence(en, cn);
+        return `
+        <div class="hanzi">
+          <div class="hanzi-main">
+            <strong>${char}</strong>
+            <div>
+              <p><b>${word}</b> <span>${pinyin}</span></p>
+              <p class="muted">${sentence}</p>
+            </div>
+          </div>
+          <div class="linked-english">
+            <p>${emoji} 联动英语：<b>${en}</b> <span class="phonetic">${phonetic}</span></p>
+            <p class="muted">${englishSentence}</p>
+          </div>
+          <div class="mini-task">小任务：先读“${char} ${word}”，再说英文 ${en}，最后说一句中文：${sentence}</div>
+          <div class="btn-row">
+            <button class="btn secondary" data-say-cn="${sentence}">读中文</button>
+            <button class="btn green" data-say-en="${en}. ${englishSentence}">听英文</button>
+            <button class="btn orange" data-finish-link="${char}-${en}">完成联动</button>
+          </div>
+        </div>
+      `;
+      }).join("");
+      document.querySelectorAll("[data-say-cn]").forEach(button => {
+        button.addEventListener("click", () => speak(button.dataset.sayCn, "zh-CN"));
+      });
+      document.querySelectorAll("[data-say-en]").forEach(button => {
+        button.addEventListener("click", () => speak(button.dataset.sayEn, "en-US"));
+      });
+      document.querySelectorAll("[data-finish-link]").forEach(button => {
+        button.addEventListener("click", () => {
+          addScore(5);
+          button.textContent = "已完成";
+          button.disabled = true;
+        });
+      });
       document.getElementById("readingTitle").textContent = `${t.emoji} ${t.title}朗读`;
       document.getElementById("readingPrompt").textContent = t.reading;
       document.getElementById("speakingPrompt").textContent = t.speaking;
@@ -1013,22 +1111,23 @@
       const englishQuestions = t.english.slice(0, 8).map(([en, phonetic, cn, emoji]) => ({
         type: "英语词汇", badge: emoji, text: `“${cn}” 的英文是什么？`, answer: en,
         sentence: exampleSentence(en, cn),
-        choices: repeatAnswer(en)
+        choices: makeChoices(en, t.english.map(item => item[0]))
       }));
       const chineseQuestions = t.chinese.map(([char, pinyin, word]) => ({
         type: "语文拼音", badge: char, text: `“${char}” 的拼音是什么？`, answer: pinyin,
         sentence: `读一读：${char}，${word}，${pinyin}。`,
-        choices: repeatAnswer(pinyin)
+        choices: makeChoices(pinyin, t.chinese.map(item => item[1]).concat(["yǔ", "xué", "míng", "tiān"]))
       }));
       return englishQuestions.concat(chineseQuestions, {
         type: "阅读理解", badge: "📖", text: `这个主题最适合练习什么？`, answer: t.summary,
         sentence: `主题记忆：${t.title}，${t.summary}。`,
-        choices: repeatAnswer(t.summary)
+        choices: makeChoices(t.summary, themes.map(item => item.summary))
       });
     }
 
-    function repeatAnswer(answer) {
-      return [answer, answer, answer];
+    function makeChoices(answer, pool) {
+      const unique = Array.from(new Set(pool.filter(item => item !== answer)));
+      return shuffle([answer, ...shuffle(unique).slice(0, 3)]);
     }
 
     function exampleSentence(en, cn) {
