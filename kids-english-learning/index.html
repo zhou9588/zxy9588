@@ -958,12 +958,28 @@
       return themes.find(item => item.id === currentThemeId) || themes[0];
     }
 
+    function childFriendlyVoice(lang) {
+      const voices = window.speechSynthesis.getVoices();
+      const isChinese = lang.toLowerCase().startsWith("zh");
+      const preferredNames = isChinese
+        ? ["xiaoxiao", "xiaoyi", "tingting", "meijia", "sinji", "mei-jia", "li-mu"]
+        : ["samantha", "karen", "moira", "tessa", "zira", "aria", "jenny", "ava"];
+      const localVoices = voices.filter(voice => voice.lang && voice.lang.toLowerCase().startsWith(lang.slice(0, 2).toLowerCase()));
+      return localVoices.find(voice => preferredNames.some(name => voice.name.toLowerCase().includes(name)))
+        || localVoices.find(voice => /female|girl|child|kid|junior/i.test(voice.name))
+        || localVoices[0]
+        || voices[0];
+    }
+
     function speak(text, lang = "en-US") {
       if (!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = lang;
-      utterance.rate = .86;
+      utterance.voice = childFriendlyVoice(lang);
+      utterance.pitch = lang.toLowerCase().startsWith("zh") ? 1.28 : 1.35;
+      utterance.rate = lang.toLowerCase().startsWith("zh") ? .9 : .92;
+      utterance.volume = 1;
       window.speechSynthesis.speak(utterance);
     }
 
