@@ -3,112 +3,143 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>小学生英语学习乐园</title>
+  <title>三上英语语文联动学习乐园</title>
   <style>
     :root {
-      --ink: #24313f;
-      --muted: #607181;
+      --ink: #1f2937;
+      --muted: #64748b;
       --paper: #ffffff;
-      --line: #dce6ef;
-      --sky: #dff4ff;
-      --mint: #dcfce7;
-      --peach: #ffe4d2;
-      --lemon: #fff4bd;
-      --rose: #ffe1eb;
+      --line: #dbe7f0;
       --blue: #2563eb;
       --green: #16a34a;
       --orange: #f97316;
       --pink: #db2777;
-      --shadow: 0 14px 30px rgba(40, 67, 92, .14);
+      --purple: #7c3aed;
+      --yellow: #facc15;
+      --sky: #e0f2fe;
+      --mint: #dcfce7;
+      --peach: #ffedd5;
+      --rose: #ffe4e6;
+      --lavender: #ede9fe;
+      --shadow: 0 14px 32px rgba(30, 41, 59, .12);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 8% 8%, #fff7cc 0 10%, transparent 11%),
-        radial-gradient(circle at 88% 16%, #d7f8ff 0 12%, transparent 13%),
+        radial-gradient(circle at 10% 7%, rgba(250,204,21,.23) 0 10%, transparent 11%),
+        radial-gradient(circle at 90% 14%, rgba(37,99,235,.15) 0 12%, transparent 13%),
         linear-gradient(180deg, #f8fdff, #fff8f1);
-      min-height: 100vh;
     }
 
-    button, input, select { font: inherit; }
+    button, input { font: inherit; }
 
     .app {
-      max-width: 1180px;
+      max-width: 1220px;
       margin: 0 auto;
       padding: 18px;
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 18px;
-      align-items: stretch;
-      min-height: 250px;
-      margin-bottom: 16px;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .hero-main, .score-card, .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
     }
 
     .hero-main {
-      border-radius: 18px;
-      background: linear-gradient(135deg, #e0f2fe, #fef3c7 52%, #ffe4e6);
+      min-height: 250px;
       padding: 28px;
-      box-shadow: var(--shadow);
-      position: relative;
+      background: linear-gradient(135deg, #e0f2fe, #fef3c7 48%, #ffe4e6);
       overflow: hidden;
+      position: relative;
     }
 
     .hero-main::after {
-      content: "ABC";
+      content: "三上 ABC 语文";
       position: absolute;
-      right: 24px;
-      bottom: -20px;
-      font-size: 92px;
+      right: 22px;
+      bottom: -12px;
+      font-size: 58px;
       font-weight: 900;
-      color: rgba(37, 99, 235, .10);
+      color: rgba(37, 99, 235, .12);
       letter-spacing: 0;
+      white-space: nowrap;
     }
 
-    .hero-main h1 {
-      margin: 0;
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.75);
+      border-radius: 999px;
+      padding: 6px 11px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #475569;
+      margin-bottom: 12px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 10px;
       font-size: 42px;
       line-height: 1.12;
       letter-spacing: 0;
-      max-width: 720px;
     }
 
     .hero-main p {
-      margin: 12px 0 0;
+      max-width: 760px;
       color: #475569;
       font-size: 17px;
-      max-width: 720px;
+      line-height: 1.65;
     }
 
-    .score-panel {
-      border-radius: 18px;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      padding: 22px;
-      box-shadow: var(--shadow);
+    .score-card {
+      padding: 20px;
       display: grid;
-      align-content: center;
       gap: 12px;
+      align-content: center;
     }
 
-    .score-number {
-      font-size: 52px;
-      font-weight: 900;
+    .score-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .metric {
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      padding: 12px;
+    }
+
+    .metric b {
+      display: block;
       color: var(--blue);
+      font-size: 32px;
       line-height: 1;
+      margin-bottom: 5px;
     }
 
     .progress {
       height: 14px;
-      background: #e8eef6;
-      border-radius: 99px;
+      border-radius: 999px;
+      background: #e2e8f0;
       overflow: hidden;
     }
 
@@ -116,25 +147,29 @@
       display: block;
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--green), var(--blue));
+      background: linear-gradient(90deg, var(--green), var(--blue), var(--purple));
       transition: width .25s ease;
     }
 
     .tabs {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 10px;
       margin: 14px 0;
+    }
+
+    .tab, .theme-btn, .choice, .token, .btn {
+      cursor: pointer;
+      border-radius: 14px;
+      min-height: 42px;
+      font-weight: 850;
     }
 
     .tab {
       border: 1px solid var(--line);
       background: #fff;
-      border-radius: 14px;
-      padding: 12px 10px;
-      cursor: pointer;
-      font-weight: 800;
       color: #334155;
+      padding: 12px 10px;
     }
 
     .tab.active {
@@ -146,18 +181,15 @@
     .section { display: none; }
     .section.active { display: block; }
 
+    .panel {
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 14px;
-    }
-
-    .card {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 8px 18px rgba(40, 67, 92, .08);
     }
 
     .span-3 { grid-column: span 3; }
@@ -165,40 +197,98 @@
     .span-5 { grid-column: span 5; }
     .span-6 { grid-column: span 6; }
     .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
     .span-12 { grid-column: span 12; }
 
-    h2, h3 {
-      margin: 0 0 10px;
-      line-height: 1.2;
-      letter-spacing: 0;
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
     }
 
-    h2 { font-size: 26px; }
-    h3 { font-size: 20px; }
+    .theme-btn {
+      min-height: 138px;
+      text-align: left;
+      border: 2px solid transparent;
+      padding: 16px;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(30,41,59,.08);
+    }
+
+    .theme-btn.active {
+      border-color: var(--blue);
+      background: #eff6ff;
+    }
+
+    .theme-emoji {
+      font-size: 38px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .theme-btn small, .muted {
+      display: block;
+      color: var(--muted);
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .task-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .task {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fbfdff;
+    }
+
+    .task b {
+      color: var(--purple);
+    }
+
+    .word-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
 
     .word-card {
-      min-height: 214px;
+      min-height: 218px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
       display: grid;
       align-content: center;
       justify-items: center;
-      gap: 8px;
-      text-align: center;
+      gap: 7px;
+      background: #fff;
+      box-shadow: 0 7px 16px rgba(30,41,59,.07);
     }
 
     .emoji {
-      font-size: 54px;
+      font-size: 48px;
       line-height: 1;
     }
 
     .word {
-      font-size: 28px;
-      font-weight: 900;
+      font-size: 25px;
+      font-weight: 950;
       color: #1e293b;
     }
 
+    .phonetic {
+      color: #e11d48;
+      font-weight: 850;
+    }
+
     .cn {
-      color: var(--muted);
-      font-weight: 700;
+      color: #475569;
+      font-weight: 800;
     }
 
     .btn-row {
@@ -211,13 +301,9 @@
 
     .btn {
       border: 0;
-      border-radius: 12px;
-      padding: 10px 13px;
-      cursor: pointer;
       background: var(--blue);
       color: white;
-      font-weight: 800;
-      min-height: 42px;
+      padding: 10px 13px;
     }
 
     .btn.secondary {
@@ -229,56 +315,55 @@
     .btn.green { background: var(--green); }
     .btn.orange { background: var(--orange); }
     .btn.pink { background: var(--pink); }
+    .btn.purple { background: var(--purple); }
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 99px;
-      padding: 6px 10px;
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      color: #475569;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .challenge {
-      min-height: 310px;
+    .challenge-card {
+      min-height: 360px;
       display: grid;
       align-content: center;
       justify-items: center;
+      gap: 14px;
       text-align: center;
-      gap: 12px;
+      background: linear-gradient(180deg, #ffffff, #f8fbff);
+      position: relative;
+      overflow: hidden;
     }
 
-    .question-emoji {
-      font-size: 76px;
-      width: 120px;
-      height: 120px;
+    .challenge-card.success-pop {
+      animation: successPulse .55s ease;
+    }
+
+    .spark {
+      position: absolute;
+      pointer-events: none;
+      font-size: 28px;
+      animation: floatSpark .9s ease forwards;
+    }
+
+    .question-badge {
+      font-size: 64px;
+      min-width: 110px;
+      min-height: 110px;
       display: grid;
       place-items: center;
-      background: var(--lemon);
-      border-radius: 24px;
-      border: 1px solid #f5dd79;
+      border-radius: 26px;
+      background: var(--peach);
+      border: 1px solid #fed7aa;
     }
 
     .choice-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      grid-template-columns: 1fr;
       gap: 10px;
-      width: min(460px, 100%);
+      width: min(520px, 100%);
     }
 
     .choice {
       border: 2px solid var(--line);
       background: #fff;
-      border-radius: 14px;
       padding: 14px;
-      cursor: pointer;
-      font-weight: 900;
-      font-size: 20px;
-      min-height: 58px;
+      font-size: 24px;
+      color: var(--ink);
     }
 
     .choice:hover {
@@ -287,139 +372,237 @@
     }
 
     .feedback {
-      min-height: 32px;
-      font-weight: 900;
+      min-height: 34px;
+      font-weight: 950;
       color: var(--green);
     }
 
-    .sentence-builder {
+    .memory-sentence {
+      width: min(560px, 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      padding: 12px 14px;
+      font-weight: 850;
+      line-height: 1.5;
+    }
+
+    .hanzi-grid {
       display: grid;
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .hanzi {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 16px;
+      padding: 14px;
+      min-height: 128px;
+    }
+
+    .hanzi strong {
+      font-size: 34px;
+      color: var(--pink);
+      margin-right: 8px;
+    }
+
+    .sentence-box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .fan-mode {
+      background: linear-gradient(180deg, #fff7fb, #fff);
+      border-color: #fbcfe8;
+    }
+
+    .fan-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #fdf2f8;
+      color: #be185d;
+      border: 1px solid #fbcfe8;
+      font-weight: 900;
+      margin-bottom: 8px;
     }
 
     .word-bank, .answer-line {
-      min-height: 76px;
-      border: 2px dashed #cbd5e1;
-      border-radius: 14px;
-      padding: 12px;
+      min-height: 74px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       align-content: flex-start;
+      border: 2px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 12px;
       background: #fbfdff;
+      margin: 10px 0;
+    }
+
+    .word-bank.fan-bank {
+      border-color: #f9a8d4;
+      background: #fdf2f8;
+    }
+
+    .answer-line.fan-answer {
+      border-color: #f9a8d4;
+      background: #fff7fb;
     }
 
     .token {
-      border: 1px solid #bfdbfe;
-      background: #eff6ff;
-      color: #1d4ed8;
-      border-radius: 10px;
+      border: 1px solid #f9a8d4;
+      background: #fce7f3;
+      color: #be185d;
       padding: 9px 12px;
-      cursor: pointer;
-      font-weight: 900;
     }
 
-    .chat {
-      display: grid;
-      grid-template-columns: 110px 1fr;
-      gap: 16px;
-      align-items: start;
+    .token.fan-token {
+      box-shadow: 0 5px 14px rgba(219, 39, 119, .16);
     }
 
-    .teacher {
-      width: 110px;
-      height: 110px;
-      border-radius: 26px;
-      background: linear-gradient(135deg, #fef3c7, #fbcfe8);
-      display: grid;
-      place-items: center;
-      font-size: 60px;
-      border: 1px solid #f5cde0;
-    }
-
-    .chat-box {
-      display: grid;
-      gap: 10px;
-    }
-
-    input {
-      width: 100%;
-      border: 2px solid #bfdbfe;
-      border-radius: 12px;
-      padding: 12px;
-      min-height: 48px;
-      outline: none;
-    }
-
-    .reply {
-      min-height: 72px;
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-      color: #334155;
-      font-weight: 700;
-    }
-
-    .daily-plan {
+    .badge-grid, .review-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
     }
 
-    .plan-item {
-      min-height: 112px;
-      border-radius: 14px;
-      padding: 14px;
+    .coach-box {
+      display: grid;
+      gap: 12px;
       border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
       background: #fff;
     }
 
-    .plan-item b {
+    .coach-target {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 14px;
+      align-items: center;
+      border-radius: 16px;
+      padding: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+
+    .coach-target .big {
+      width: 86px;
+      height: 86px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      background: var(--peach);
+      font-size: 42px;
+    }
+
+    .coach-target strong {
       display: block;
-      margin-bottom: 6px;
-      color: var(--blue);
+      font-size: 28px;
+      margin-bottom: 4px;
     }
 
-    .tiny {
-      color: var(--muted);
-      font-size: 13px;
+    .dialogue-log {
+      min-height: 220px;
+      max-height: 360px;
+      overflow: auto;
+      display: grid;
+      gap: 9px;
+      padding: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 16px;
     }
 
-    @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
+    .bubble {
+      width: fit-content;
+      max-width: 88%;
+      border-radius: 16px;
+      padding: 10px 12px;
+      font-weight: 750;
+      line-height: 1.45;
+    }
 
-      .tabs {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .bubble.teacher {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
 
-      .span-3, .span-4, .span-5, .span-6, .span-7, .span-12 {
-        grid-column: span 12;
-      }
+    .bubble.child {
+      background: #ecfdf5;
+      color: #166534;
+      justify-self: end;
+    }
 
-      .daily-plan {
-        grid-template-columns: 1fr 1fr;
-      }
+    .dialogue-input {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+    }
 
-      .chat {
-        grid-template-columns: 1fr;
-      }
+    .dialogue-input input {
+      min-height: 46px;
+      border: 2px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .badge, .review-item {
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      padding: 14px;
+      background: #fff;
+      min-height: 116px;
+    }
+
+    .badge.locked {
+      opacity: .45;
+      filter: grayscale(.8);
+    }
+
+    .map-note {
+      border-left: 5px solid var(--orange);
+      background: #fff7ed;
+      padding: 12px;
+      border-radius: 12px;
+      color: #7c2d12;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .tabs { grid-template-columns: repeat(2, 1fr); }
+      .theme-grid, .word-grid, .badge-grid { grid-template-columns: repeat(2, 1fr); }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8, .span-12 { grid-column: span 12; }
+      .task-strip, .hanzi-grid, .review-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 560px) {
-      .hero-main h1 {
-        font-size: 30px;
-      }
+      .app { padding: 12px; }
+      h1 { font-size: 30px; }
+      .hero-main { padding: 20px; }
+      .theme-grid, .word-grid, .choice-grid, .badge-grid, .dialogue-input { grid-template-columns: 1fr; }
+      .coach-target { grid-template-columns: 1fr; }
+    }
 
-      .tabs, .choice-grid, .daily-plan {
-        grid-template-columns: 1fr;
-      }
+    @keyframes successPulse {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.018); box-shadow: 0 0 0 8px rgba(34, 197, 94, .14); }
+      100% { transform: scale(1); }
+    }
 
-      .app {
-        padding: 12px;
-      }
+    @keyframes floatSpark {
+      0% { opacity: 0; transform: translateY(18px) scale(.6) rotate(0deg); }
+      20% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-70px) scale(1.25) rotate(22deg); }
     }
   </style>
 </head>
@@ -427,145 +610,294 @@
   <div class="app">
     <header class="hero">
       <div class="hero-main">
-        <span class="pill">小学生英语 · 网络学习版</span>
-        <h1>开心英语学习乐园</h1>
-        <p>单词卡片、听力发音、趣味答题、句子拼拼看、英语老师互动。适合小学低中年级在家练习，也适合老师课堂投屏。</p>
+        <span class="pill">三上英语 + 语文 · 主题联动学习</span>
+        <h1>闯关学习乐园</h1>
+        <p>把英语单词、课本句型、语文字词和表达训练放到同一个主题里。小朋友每次完成“听一听、答一答、说一说”，获得积分、星星和徽章。</p>
       </div>
-      <aside class="score-panel">
-        <div class="tiny">今日积分</div>
-        <div class="score-number"><span id="score">0</span></div>
-        <div class="progress" aria-label="积分进度"><span id="progressBar"></span></div>
-        <div id="badgeText">完成 30 分获得“英语小星星”。</div>
+      <aside class="score-card">
+        <div class="score-row">
+          <div class="metric"><b id="score">0</b><span>积分</span></div>
+          <div class="metric"><b id="stars">0</b><span>星星</span></div>
+        </div>
+        <div class="progress" aria-label="学习进度"><span id="progressBar"></span></div>
+        <div id="levelText">完成一个主题可解锁徽章。</div>
+        <div class="btn-row">
+          <button class="btn secondary" id="resetProgress">清空进度</button>
+        </div>
       </aside>
     </header>
 
     <nav class="tabs" aria-label="学习模块">
-      <button class="tab active" data-target="words">单词卡</button>
-      <button class="tab" data-target="quiz">趣味挑战</button>
-      <button class="tab" data-target="sentence">句子拼拼看</button>
-      <button class="tab" data-target="teacher">互动老师</button>
-      <button class="tab" data-target="plan">每日计划</button>
+      <button class="tab active" data-target="map">学习地图</button>
+      <button class="tab" data-target="words">英语词卡</button>
+      <button class="tab" data-target="chinese">语文字词</button>
+      <button class="tab" data-target="challenge">联动闯关</button>
+      <button class="tab" data-target="speaking">跟读对话</button>
+      <button class="tab" data-target="achievements">成就中心</button>
     </nav>
 
-    <section id="words" class="section active">
-      <div class="grid" id="wordGrid"></div>
+    <section id="map" class="section active">
+      <div class="panel">
+        <h2>选择今天的主题岛</h2>
+        <p class="muted">每个主题都联动英语、语文和表达任务。第一版先做核心题库，不直接搬运整篇课文。</p>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+      <div class="panel">
+        <h2 id="themeTitle">主题任务</h2>
+        <div class="task-strip" id="taskStrip"></div>
+      </div>
     </section>
 
-    <section id="quiz" class="section">
+    <section id="words" class="section">
+      <div class="panel">
+        <h2>英语单词卡</h2>
+        <p class="muted" id="wordIntro"></p>
+        <div class="word-grid" id="wordGrid"></div>
+      </div>
+    </section>
+
+    <section id="chinese" class="section">
       <div class="grid">
-        <div class="card span-7 challenge">
-          <span class="pill">看图选英文</span>
-          <div class="question-emoji" id="quizEmoji">🍎</div>
-          <h2 id="quizQuestion">这个单词的英文是什么？</h2>
-          <div class="choice-grid" id="choiceGrid"></div>
-          <div class="feedback" id="quizFeedback"></div>
-          <button class="btn secondary" id="nextQuiz">下一题</button>
+        <div class="panel span-7">
+          <h2>语文字词联动</h2>
+          <p class="muted" id="chineseIntro"></p>
+          <div class="hanzi-grid" id="hanziGrid"></div>
         </div>
-        <div class="card span-5">
-          <h3>学习小提示</h3>
-          <p>先点“听发音”，再跟读 3 遍。答错没关系，系统会继续鼓励你。</p>
-          <ul>
-            <li>看图想中文意思。</li>
-            <li>听英文发音。</li>
-            <li>大声跟读。</li>
-            <li>再选择答案。</li>
-          </ul>
+        <div class="panel span-5">
+          <h2>朗读与表达</h2>
+          <div class="sentence-box">
+            <h3 id="readingTitle"></h3>
+            <p id="readingPrompt"></p>
+            <p><strong>表达任务：</strong><span id="speakingPrompt"></span></p>
+            <div class="btn-row">
+              <button class="btn green" id="finishReading">完成朗读</button>
+              <button class="btn orange" id="finishSpeaking">完成表达</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="sentence" class="section">
+    <section id="challenge" class="section">
       <div class="grid">
-        <div class="card span-7 sentence-builder">
-          <span class="pill">把单词点成一句话</span>
-          <h2 id="sentenceCn">我喜欢苹果。</h2>
-          <div class="word-bank" id="wordBank"></div>
-          <div class="answer-line" id="answerLine"></div>
+        <div class="panel span-7 challenge-card">
+          <span class="pill" id="challengeType">联动题</span>
+          <div class="question-badge" id="questionBadge">🎯</div>
+          <h2 id="questionText">准备开始</h2>
+          <div class="choice-grid" id="choiceGrid"></div>
+          <div class="feedback" id="feedback"></div>
+          <div class="btn-row">
+            <button class="btn purple" id="nextQuestion">下一题</button>
+            <button class="btn secondary" id="reviewWrong">复习错题</button>
+          </div>
+        </div>
+        <div class="panel span-5">
+          <h2>句子粉丝团</h2>
+          <div class="fan-title">加油助力：只用正确词块拼句子</div>
+          <p class="muted" id="sentenceCn"></p>
+          <div class="word-bank fan-bank" id="wordBank"></div>
+          <div class="answer-line fan-answer" id="answerLine"></div>
           <div class="feedback" id="sentenceFeedback"></div>
           <div class="btn-row">
-            <button class="btn green" id="checkSentence">检查句子</button>
-            <button class="btn secondary" id="resetSentence">重新拼</button>
-            <button class="btn orange" id="newSentence">换一句</button>
+            <button class="btn green" id="checkSentence">检查</button>
+            <button class="btn secondary" id="resetSentence">重拼</button>
           </div>
-        </div>
-        <div class="card span-5">
-          <h3>句型积木</h3>
-          <ul>
-            <li>I like ... 我喜欢……</li>
-            <li>This is ... 这是……</li>
-            <li>I see ... 我看见……</li>
-            <li>It is ... 它是……</li>
-          </ul>
         </div>
       </div>
     </section>
 
-    <section id="teacher" class="section">
-      <div class="card">
-        <h2>和英语老师互动</h2>
-        <div class="chat">
-          <div class="teacher" aria-label="英语老师">🎓</div>
-          <div class="chat-box">
-            <input id="studentInput" placeholder="输入一个英文单词或一句话，例如：I like apples.">
-            <div class="btn-row" style="justify-content:flex-start">
-              <button class="btn pink" id="sendTeacher">发送给老师</button>
-              <button class="btn secondary" id="speakInput">读出我输入的英文</button>
+    <section id="speaking" class="section">
+      <div class="grid">
+        <div class="panel span-6">
+          <h2>读音纠正</h2>
+          <p class="muted">点击“听标准读音”，再点击“开始跟读”。系统会根据浏览器语音识别结果给出反馈。</p>
+          <div class="coach-box">
+            <div class="coach-target">
+              <div class="big" id="pronEmoji">🎧</div>
+              <div>
+                <strong id="pronTarget">English</strong>
+                <span class="phonetic" id="pronPhonetic">/ˈɪŋɡlɪʃ/</span>
+                <p class="muted" id="pronMeaning">英语</p>
+              </div>
             </div>
-            <div class="reply" id="teacherReply">老师在这里等你。试着输入一个单词吧。</div>
+            <div class="btn-row">
+              <button class="btn" id="playPronunciation">听标准读音</button>
+              <button class="btn green" id="startPronunciation">开始跟读</button>
+              <button class="btn secondary" id="nextPronunciation">换一个</button>
+            </div>
+            <div class="feedback" id="pronFeedback">准备好后开始跟读。</div>
+          </div>
+        </div>
+        <div class="panel span-6">
+          <h2>人机对话</h2>
+          <p class="muted">老师会围绕当前主题提问。小朋友可以输入英文，也可以用语音输入。</p>
+          <div class="coach-box">
+            <div class="dialogue-log" id="dialogueLog"></div>
+            <div class="dialogue-input">
+              <input id="dialogueInput" placeholder="输入英文回答，例如：I see a dog.">
+              <button class="btn pink" id="sendDialogue">发送</button>
+              <button class="btn secondary" id="speakDialogue">语音</button>
+            </div>
+            <div class="btn-row">
+              <button class="btn purple" id="newDialogue">换个问题</button>
+              <button class="btn secondary" id="repeatTeacher">老师再说一遍</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="plan" class="section">
-      <div class="card">
-        <h2>每日 15 分钟学习计划</h2>
-        <div class="daily-plan">
-          <div class="plan-item" style="background:var(--sky)"><b>第 1 步：听</b>听 6 个单词，每个跟读 3 遍。</div>
-          <div class="plan-item" style="background:var(--mint)"><b>第 2 步：选</b>完成 5 道看图选英文题。</div>
-          <div class="plan-item" style="background:var(--peach)"><b>第 3 步：拼</b>拼 2 个简单句子。</div>
-          <div class="plan-item" style="background:var(--rose)"><b>第 4 步：说</b>对老师说 1 句英文。</div>
-        </div>
-        <p class="tiny">家长提示：鼓励孩子大声开口，不要只追求答对。每天短时间、高频率练习更有效。</p>
+    <section id="achievements" class="section">
+      <div class="panel">
+        <h2>徽章和错题本</h2>
+        <div class="badge-grid" id="badgeGrid"></div>
+      </div>
+      <div class="panel">
+        <h2>需要复习的题</h2>
+        <div class="review-grid" id="wrongList"></div>
       </div>
     </section>
   </div>
 
   <script>
-    const words = [
-      { emoji: "🍎", en: "Apple", cn: "苹果", color: "var(--peach)" },
-      { emoji: "🍌", en: "Banana", cn: "香蕉", color: "var(--lemon)" },
-      { emoji: "🐶", en: "Dog", cn: "小狗", color: "var(--sky)" },
-      { emoji: "🐱", en: "Cat", cn: "小猫", color: "var(--rose)" },
-      { emoji: "📚", en: "Book", cn: "书", color: "var(--mint)" },
-      { emoji: "🖊️", en: "Pen", cn: "钢笔", color: "var(--sky)" },
-      { emoji: "☀️", en: "Sun", cn: "太阳", color: "var(--lemon)" },
-      { emoji: "⚽", en: "Ball", cn: "球", color: "var(--mint)" }
+    const themes = [
+      {
+        id: "school", emoji: "🏫", title: "学校与课堂", color: "var(--sky)",
+        summary: "英语课堂指令 + 语文学习习惯",
+        task: ["听 8 个课堂词", "完成 4 道课堂题", "说一句我的课堂规则"],
+        english: [
+          ["English", "/ˈɪŋɡlɪʃ/", "英语", "📘"], ["book", "/bʊk/", "书", "📚"], ["pen", "/pen/", "钢笔", "🖊️"], ["pencil", "/ˈpensl/", "铅笔", "✏️"],
+          ["school", "/skuːl/", "学校", "🏫"], ["class", "/klɑːs/", "班级；课", "👩‍🏫"], ["listen", "/ˈlɪsn/", "听", "👂"], ["read", "/riːd/", "读", "📖"],
+          ["write", "/raɪt/", "写", "✍️"], ["draw", "/drɔː/", "画", "🎨"], ["speak", "/spiːk/", "说", "🗣️"], ["teacher", "/ˈtiːtʃə/", "老师", "👩‍🏫"]
+        ],
+        chinese: [["读", "dú", "读书", "我每天读一页书。"], ["写", "xiě", "写字", "写字要一笔一画。"], ["问", "wèn", "提问", "不懂就要问。"], ["课", "kè", "上课", "上课认真听。"]],
+        reading: "读一段课堂学习提示：遇到不会的问题，先想一想，再勇敢提问。",
+        speaking: "用中文说一句：我上课时会怎样学习？",
+        sentence: { cn: "我会读英语。", answer: ["I", "can", "read", "English"], bank: ["English", "can", "I", "read", "book"] }
+      },
+      {
+        id: "family", emoji: "🏠", title: "家庭与称呼", color: "var(--peach)",
+        summary: "family 词汇 + 介绍家人",
+        task: ["听家庭成员词", "完成介绍家人题", "说一句我的家人"],
+        english: [
+          ["family", "/ˈfæməli/", "家庭", "👨‍👩‍👧"], ["father", "/ˈfɑːðə/", "爸爸", "👨"], ["mother", "/ˈmʌðə/", "妈妈", "👩"], ["brother", "/ˈbrʌðə/", "兄弟", "👦"],
+          ["sister", "/ˈsɪstə/", "姐妹", "👧"], ["grandpa", "/ˈɡrænpɑː/", "爷爷；外公", "👴"], ["grandma", "/ˈɡrænmɑː/", "奶奶；外婆", "👵"], ["me", "/miː/", "我", "🙂"],
+          ["your", "/jɔː/", "你的", "👉"], ["name", "/neɪm/", "名字", "🏷️"], ["hello", "/həˈləʊ/", "你好", "👋"], ["friend", "/frend/", "朋友", "🤝"]
+        ],
+        chinese: [["家", "jiā", "家人", "我爱我的家。"], ["亲", "qīn", "亲人", "亲人之间要关心。"], ["名", "míng", "姓名", "我会介绍自己的名字。"], ["友", "yǒu", "朋友", "朋友之间要互相帮助。"]],
+        reading: "读一段家庭表达提示：介绍家人时，可以说称呼、特点和你想感谢的话。",
+        speaking: "用中文或英文说一句：This is my ... / 这是我的……",
+        sentence: { cn: "这是我的妈妈。", answer: ["This", "is", "my", "mother"], bank: ["mother", "is", "my", "This", "father"] }
+      },
+      {
+        id: "animals", emoji: "🐾", title: "动物朋友", color: "var(--mint)",
+        summary: "动物词汇 + 观察描写",
+        task: ["听动物词", "看图选英文", "描述一种动物"],
+        english: [
+          ["cat", "/kæt/", "猫", "🐱"], ["dog", "/dɒɡ/", "狗", "🐶"], ["bird", "/bɜːd/", "鸟", "🐦"], ["fish", "/fɪʃ/", "鱼", "🐟"],
+          ["duck", "/dʌk/", "鸭子", "🦆"], ["horse", "/hɔːs/", "马", "🐴"], ["tiger", "/ˈtaɪɡə/", "老虎", "🐯"], ["monkey", "/ˈmʌŋki/", "猴子", "🐒"],
+          ["rabbit", "/ˈræbɪt/", "兔子", "🐰"], ["bear", "/beə/", "熊", "🐻"], ["elephant", "/ˈelɪfənt/", "大象", "🐘"], ["zebra", "/ˈzebrə/", "斑马", "🦓"]
+        ],
+        chinese: [["鸟", "niǎo", "小鸟", "小鸟在树上唱歌。"], ["鱼", "yú", "金鱼", "金鱼在水里游。"], ["马", "mǎ", "马儿", "马儿跑得快。"], ["看", "kàn", "观察", "观察动物的样子。"]],
+        reading: "读一段观察提示：观察动物时，可以看颜色、动作和声音。",
+        speaking: "说一句：I see a ... / 我看见一只……",
+        sentence: { cn: "我看见一只小狗。", answer: ["I", "see", "a", "dog"], bank: ["dog", "a", "see", "I", "cat"] }
+      },
+      {
+        id: "colors", emoji: "🌈", title: "颜色与数字", color: "var(--lavender)",
+        summary: "颜色数字 + 分类表达",
+        task: ["听颜色数字", "完成配对题", "描述物品颜色"],
+        english: [
+          ["red", "/red/", "红色", "🔴"], ["yellow", "/ˈjeləʊ/", "黄色", "🟡"], ["blue", "/bluː/", "蓝色", "🔵"], ["green", "/ɡriːn/", "绿色", "🟢"],
+          ["black", "/blæk/", "黑色", "⚫"], ["white", "/waɪt/", "白色", "⚪"], ["one", "/wʌn/", "一", "1️⃣"], ["two", "/tuː/", "二", "2️⃣"],
+          ["three", "/θriː/", "三", "3️⃣"], ["four", "/fɔː/", "四", "4️⃣"], ["five", "/faɪv/", "五", "5️⃣"], ["colour", "/ˈkʌlə/", "颜色", "🎨"]
+        ],
+        chinese: [["红", "hóng", "红色", "红红的太阳。"], ["蓝", "lán", "蓝天", "蓝蓝的天空。"], ["数", "shù", "数字", "我会数数字。"], ["色", "sè", "颜色", "颜色让画面更好看。"]],
+        reading: "读一段分类提示：描述物品时，可以说数量、颜色和名称。",
+        speaking: "说一句：It is red. / 它是红色的。",
+        sentence: { cn: "它是蓝色的。", answer: ["It", "is", "blue"], bank: ["blue", "is", "It", "red"] }
+      },
+      {
+        id: "nature", emoji: "🌦️", title: "自然与天气", color: "var(--sky)",
+        summary: "自然词汇 + 景物描写",
+        task: ["听自然词", "答天气题", "说一句天气观察"],
+        english: [
+          ["sun", "/sʌn/", "太阳", "☀️"], ["moon", "/muːn/", "月亮", "🌙"], ["star", "/stɑː/", "星星", "⭐"], ["rain", "/reɪn/", "雨", "🌧️"],
+          ["wind", "/wɪnd/", "风", "💨"], ["cloud", "/klaʊd/", "云", "☁️"], ["tree", "/triː/", "树", "🌳"], ["flower", "/ˈflaʊə/", "花", "🌸"],
+          ["sky", "/skaɪ/", "天空", "🌌"], ["river", "/ˈrɪvə/", "河流", "🏞️"], ["hot", "/hɒt/", "热的", "🔥"], ["cold", "/kəʊld/", "冷的", "❄️"]
+        ],
+        chinese: [["日", "rì", "日光", "日光照在树叶上。"], ["月", "yuè", "月亮", "月亮挂在天上。"], ["云", "yún", "白云", "白云慢慢飘。"], ["风", "fēng", "秋风", "秋风吹过校园。"]],
+        reading: "读一段景物提示：写自然景物时，可以写看到的、听到的和想到的。",
+        speaking: "说一句今天的天气：Today is ...",
+        sentence: { cn: "我看见太阳。", answer: ["I", "see", "the", "sun"], bank: ["sun", "the", "see", "I", "moon"] }
+      },
+      {
+        id: "actions", emoji: "🏃", title: "日常动作", color: "var(--rose)",
+        summary: "动作词 + 行为表达",
+        task: ["听动作词", "动作配对", "说一天做什么"],
+        english: [
+          ["look", "/lʊk/", "看", "👀"], ["act", "/ækt/", "表演", "🎭"], ["play", "/pleɪ/", "玩", "⚽"], ["sing", "/sɪŋ/", "唱", "🎤"],
+          ["begin", "/bɪˈɡɪn/", "开始", "▶️"], ["join", "/dʒɔɪn/", "加入", "➕"], ["come", "/kʌm/", "来", "🚶"], ["guess", "/ɡes/", "猜", "❓"],
+          ["think", "/θɪŋk/", "思考", "💭"], ["help", "/help/", "帮助", "🤲"], ["run", "/rʌn/", "跑", "🏃"], ["jump", "/dʒʌmp/", "跳", "🦘"]
+        ],
+        chinese: [["想", "xiǎng", "思考", "我先想一想。"], ["帮", "bāng", "帮助", "我愿意帮助同学。"], ["跑", "pǎo", "跑步", "下课后去跑步。"], ["唱", "chàng", "唱歌", "大家一起唱歌。"]],
+        reading: "读一段行动提示：完成任务前，先听清要求，再开始行动。",
+        speaking: "用一个动作词说句子：I can ...",
+        sentence: { cn: "我会唱歌。", answer: ["I", "can", "sing"], bank: ["sing", "can", "I", "play"] }
+      },
+      {
+        id: "stories", emoji: "📖", title: "人物故事", color: "var(--peach)",
+        summary: "人物品质 + 阅读理解",
+        task: ["学人物词", "答阅读题", "说一个品质"],
+        english: [
+          ["kid", "/kɪd/", "小孩", "🧒"], ["you", "/juː/", "你；你们", "👉"], ["I", "/aɪ/", "我", "🙂"], ["he", "/hiː/", "他", "👦"],
+          ["she", "/ʃiː/", "她", "👧"], ["good", "/ɡʊd/", "好的", "👍"], ["easy", "/ˈiːzi/", "容易的", "✅"], ["ready", "/ˈredi/", "准备好的", "🎒"],
+          ["OK", "/ˌəʊˈkeɪ/", "可以", "👌"], ["yeah", "/jeə/", "是；耶", "🙌"], ["brave", "/breɪv/", "勇敢的", "🛡️"], ["kind", "/kaɪnd/", "友善的", "💗"]
+        ],
+        chinese: [["勇", "yǒng", "勇敢", "勇敢提问。"], ["善", "shàn", "善良", "善良地帮助别人。"], ["懂", "dǒng", "懂得", "不懂就要问。"], ["背", "bèi", "背诵", "认真背诵课文。"]],
+        reading: "读一段阅读提示：读人物故事时，想一想人物做了什么、为什么这样做。",
+        speaking: "说一句：我觉得这个人物很……，因为……",
+        sentence: { cn: "我准备好了。", answer: ["I", "am", "ready"], bank: ["ready", "I", "am", "good"] }
+      },
+      {
+        id: "things", emoji: "🎒", title: "物品与方位", color: "var(--mint)",
+        summary: "物品名称 + 方位表达",
+        task: ["听物品词", "找方位", "描述桌面物品"],
+        english: [
+          ["bag", "/bæɡ/", "书包", "🎒"], ["desk", "/desk/", "课桌", "🪑"], ["chair", "/tʃeə/", "椅子", "🪑"], ["ruler", "/ˈruːlə/", "尺子", "📏"],
+          ["eraser", "/ɪˈreɪzə/", "橡皮", "🧽"], ["box", "/bɒks/", "盒子", "📦"], ["in", "/ɪn/", "在……中", "📥"], ["on", "/ɒn/", "在……上", "⬆️"],
+          ["under", "/ˈʌndə/", "在……下面", "⬇️"], ["where", "/weə/", "在哪里", "❔"], ["what", "/wɒt/", "什么", "❓"], ["this", "/ðɪs/", "这个", "☝️"]
+        ],
+        chinese: [["书", "shū", "书本", "书在桌子上。"], ["桌", "zhuō", "桌子", "桌子上有文具。"], ["上", "shàng", "上面", "书在桌上。"], ["里", "lǐ", "里面", "笔在书包里。"]],
+        reading: "读一段观察提示：描述物品时，说清楚是什么、在哪里。",
+        speaking: "说一句：The book is on the desk.",
+        sentence: { cn: "书在桌子上。", answer: ["The", "book", "is", "on", "the", "desk"], bank: ["desk", "book", "The", "on", "is", "the", "in"] }
+      }
     ];
 
-    const sentences = [
-      { cn: "我喜欢苹果。", answer: ["I", "like", "apples"], bank: ["apples", "I", "like", "dog"] },
-      { cn: "这是一只猫。", answer: ["This", "is", "a", "cat"], bank: ["cat", "a", "This", "is", "book"] },
-      { cn: "我看见一只小狗。", answer: ["I", "see", "a", "dog"], bank: ["see", "dog", "I", "a", "sun"] },
-      { cn: "它是一本书。", answer: ["It", "is", "a", "book"], bank: ["book", "is", "It", "a", "ball"] }
-    ];
+    let currentThemeId = localStorage.getItem("linkedTheme") || "school";
+    let currentQuestion = 0;
+    let pronunciationIndex = 0;
+    let dialogueIndex = 0;
+    let lastTeacherPrompt = "";
+    let sentenceTokens = [];
+    let state = loadState();
 
-    let score = 0;
-    let quizIndex = 0;
-    let currentSentence = 0;
-    let answerTokens = [];
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem("linkedLearningState")) || { score: 0, stars: 0, mastered: {}, badges: {}, wrong: [] };
+      } catch {
+        return { score: 0, stars: 0, mastered: {}, badges: {}, wrong: [] };
+      }
+    }
 
-    const scoreEl = document.getElementById("score");
-    const progressBar = document.getElementById("progressBar");
-    const badgeText = document.getElementById("badgeText");
+    function saveState() {
+      localStorage.setItem("linkedLearningState", JSON.stringify(state));
+      localStorage.setItem("linkedTheme", currentThemeId);
+    }
 
-    function updateScore(points) {
-      score += points;
-      scoreEl.textContent = score;
-      progressBar.style.width = `${Math.min(100, score / 60 * 100)}%`;
-      if (score >= 60) badgeText.textContent = "太棒了！你已经是“英语小达人”。";
-      else if (score >= 30) badgeText.textContent = "恭喜获得“英语小星星”，继续加油。";
-      else badgeText.textContent = "完成 30 分获得“英语小星星”。";
+    function theme() {
+      return themes.find(item => item.id === currentThemeId) || themes[0];
     }
 
     function speak(text, lang = "en-US") {
@@ -577,148 +909,468 @@
       window.speechSynthesis.speak(utterance);
     }
 
+    function addScore(points) {
+      state.score += points;
+      state.stars = Math.floor(state.score / 30);
+      saveState();
+      renderScore();
+    }
+
+    function renderScore() {
+      document.getElementById("score").textContent = state.score;
+      document.getElementById("stars").textContent = state.stars;
+      document.getElementById("progressBar").style.width = `${Math.min(100, (state.score % 150) / 150 * 100)}%`;
+      const learned = Object.keys(state.mastered || {}).length;
+      document.getElementById("levelText").textContent = `已掌握 ${learned} 张词卡，已获得 ${Object.keys(state.badges || {}).length} 枚徽章。`;
+    }
+
+    function switchTab(id) {
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.target === id));
+      document.querySelectorAll(".section").forEach(section => section.classList.toggle("active", section.id === id));
+    }
+
     document.querySelectorAll(".tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
-        document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.target).classList.add("active");
-      });
+      tab.addEventListener("click", () => switchTab(tab.dataset.target));
     });
 
+    function renderThemes() {
+      const grid = document.getElementById("themeGrid");
+      grid.innerHTML = "";
+      themes.forEach(item => {
+        const button = document.createElement("button");
+        button.className = "theme-btn";
+        button.style.background = item.color;
+        button.classList.toggle("active", item.id === currentThemeId);
+        button.innerHTML = `<span class="theme-emoji">${item.emoji}</span><h3>${item.title}</h3><small>${item.summary}</small>`;
+        button.addEventListener("click", () => {
+          currentThemeId = item.id;
+          currentQuestion = 0;
+          saveState();
+          renderAll();
+        });
+        grid.appendChild(button);
+      });
+    }
+
+    function renderTasks() {
+      const t = theme();
+      document.getElementById("themeTitle").textContent = `${t.emoji} ${t.title}：三步闯关`;
+      document.getElementById("taskStrip").innerHTML = t.task.map((item, index) => (
+        `<div class="task"><b>任务 ${index + 1}</b><p>${item}</p></div>`
+      )).join("");
+    }
+
     function renderWords() {
+      const t = theme();
+      document.getElementById("wordIntro").textContent = `${t.title}：点击听发音，读会后点“我会了”。`;
       const grid = document.getElementById("wordGrid");
       grid.innerHTML = "";
-      words.forEach(item => {
+      t.english.forEach(([en, phonetic, cn, emoji]) => {
+        const key = `${t.id}:${en}`;
         const card = document.createElement("div");
-        card.className = "card span-3 word-card";
-        card.style.background = item.color;
+        card.className = "word-card";
+        card.style.background = t.color;
         card.innerHTML = `
-          <div class="emoji">${item.emoji}</div>
-          <div class="word">${item.en}</div>
-          <div class="cn">${item.cn}</div>
+          <div class="emoji">${emoji}</div>
+          <div class="word">${en}</div>
+          <div class="phonetic">${phonetic}</div>
+          <div class="cn">${cn}</div>
           <div class="btn-row">
             <button class="btn">听发音</button>
-            <button class="btn secondary">我会读</button>
+            <button class="btn secondary">${state.mastered[key] ? "已掌握" : "我会了"}</button>
           </div>
         `;
-        const [speakBtn, knowBtn] = card.querySelectorAll("button");
-        speakBtn.addEventListener("click", () => speak(item.en));
-        knowBtn.addEventListener("click", () => {
-          updateScore(2);
-          knowBtn.textContent = "已加 2 分";
+        const [listen, done] = card.querySelectorAll("button");
+        listen.addEventListener("click", () => speak(en));
+        done.addEventListener("click", () => {
+          if (!state.mastered[key]) {
+            state.mastered[key] = true;
+            addScore(2);
+            done.textContent = "已掌握";
+          }
         });
         grid.appendChild(card);
       });
+    }
+
+    function renderChinese() {
+      const t = theme();
+      document.getElementById("chineseIntro").textContent = `${t.title}：语文部分重点练字词、拼音、组词和表达。`;
+      document.getElementById("hanziGrid").innerHTML = t.chinese.map(([char, pinyin, word, sentence]) => `
+        <div class="hanzi">
+          <p><strong>${char}</strong><span>${pinyin}</span></p>
+          <p><b>${word}</b></p>
+          <p class="muted">${sentence}</p>
+        </div>
+      `).join("");
+      document.getElementById("readingTitle").textContent = `${t.emoji} ${t.title}朗读`;
+      document.getElementById("readingPrompt").textContent = t.reading;
+      document.getElementById("speakingPrompt").textContent = t.speaking;
+    }
+
+    function allQuestions() {
+      const t = theme();
+      const englishQuestions = t.english.slice(0, 8).map(([en, phonetic, cn, emoji]) => ({
+        type: "英语词汇", badge: emoji, text: `“${cn}” 的英文是什么？`, answer: en,
+        sentence: exampleSentence(en, cn),
+        choices: repeatAnswer(en)
+      }));
+      const chineseQuestions = t.chinese.map(([char, pinyin, word]) => ({
+        type: "语文拼音", badge: char, text: `“${char}” 的拼音是什么？`, answer: pinyin,
+        sentence: `读一读：${char}，${word}，${pinyin}。`,
+        choices: repeatAnswer(pinyin)
+      }));
+      return englishQuestions.concat(chineseQuestions, {
+        type: "阅读理解", badge: "📖", text: `这个主题最适合练习什么？`, answer: t.summary,
+        sentence: `主题记忆：${t.title}，${t.summary}。`,
+        choices: repeatAnswer(t.summary)
+      });
+    }
+
+    function repeatAnswer(answer) {
+      return [answer, answer, answer];
+    }
+
+    function exampleSentence(en, cn) {
+      const lower = en.toLowerCase();
+      if (["red", "yellow", "blue", "green", "black", "white"].includes(lower)) return `句子：It is ${en}.  它是${cn}。`;
+      if (["father", "mother", "brother", "sister", "grandpa", "grandma", "teacher", "friend"].includes(lower)) return `句子：This is my ${en}.  这是我的${cn}。`;
+      if (["cat", "dog", "bird", "fish", "duck", "horse", "tiger", "monkey", "rabbit", "bear", "elephant", "zebra"].includes(lower)) return `句子：I see a ${en}.  我看见一只${cn}。`;
+      if (["listen", "read", "write", "draw", "speak", "sing", "play", "look", "think", "run", "jump"].includes(lower)) return `句子：I can ${en}.  我会${cn}。`;
+      return `句子：I like ${en}.  我记住 ${en} 是“${cn}”。`;
     }
 
     function shuffle(list) {
       return [...list].sort(() => Math.random() - .5);
     }
 
-    function renderQuiz() {
-      const item = words[quizIndex % words.length];
-      const choices = shuffle([item.en, ...shuffle(words.filter(w => w.en !== item.en)).slice(0, 3).map(w => w.en)]);
-      document.getElementById("quizEmoji").textContent = item.emoji;
-      document.getElementById("quizQuestion").textContent = `“${item.cn}” 的英文是什么？`;
-      document.getElementById("quizFeedback").textContent = "";
-      const grid = document.getElementById("choiceGrid");
-      grid.innerHTML = "";
-      choices.forEach(choice => {
-        const btn = document.createElement("button");
-        btn.className = "choice";
-        btn.textContent = choice;
-        btn.addEventListener("click", () => {
-          if (choice === item.en) {
-            document.getElementById("quizFeedback").textContent = "答对啦！奖励 10 分。";
-            speak(item.en);
-            updateScore(10);
+    function renderQuestion() {
+      const qs = allQuestions();
+      const q = qs[currentQuestion % qs.length];
+      document.getElementById("challengeType").textContent = q.type;
+      document.getElementById("questionBadge").textContent = q.badge;
+      document.getElementById("questionText").textContent = q.text;
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("choiceGrid").innerHTML = "";
+      const oldSentence = document.getElementById("memorySentence");
+      if (oldSentence) oldSentence.remove();
+      const sentence = document.createElement("div");
+      sentence.className = "memory-sentence";
+      sentence.id = "memorySentence";
+      sentence.textContent = q.sentence || `记一记：${q.answer}`;
+      document.getElementById("questionText").after(sentence);
+      q.choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.className = "choice";
+        button.textContent = choice;
+        button.addEventListener("click", () => {
+          if (choice === q.answer) {
+            document.getElementById("feedback").textContent = "答对了，读一读例句，奖励 10 分。";
+            playSuccessAnimation();
+            addScore(10);
+            if (q.type.includes("英语")) speak(`${q.answer}. ${q.sentence}`);
           } else {
-            document.getElementById("quizFeedback").textContent = `差一点，正确答案是 ${item.en}。`;
-            speak(item.en);
+            document.getElementById("feedback").textContent = `再试一次。正确答案：${q.answer}`;
+            state.wrong.unshift({ theme: theme().title, text: q.text, answer: q.answer, date: new Date().toLocaleDateString() });
+            state.wrong = state.wrong.slice(0, 12);
+            saveState();
+            renderWrong();
           }
         });
-        grid.appendChild(btn);
+        document.getElementById("choiceGrid").appendChild(button);
       });
     }
 
-    document.getElementById("nextQuiz").addEventListener("click", () => {
-      quizIndex += 1;
-      renderQuiz();
-    });
+    function playSuccessAnimation() {
+      const card = document.querySelector(".challenge-card");
+      card.classList.remove("success-pop");
+      void card.offsetWidth;
+      card.classList.add("success-pop");
+      ["⭐", "🌟", "👏", "💗", "✨"].forEach((icon, index) => {
+        const spark = document.createElement("span");
+        spark.className = "spark";
+        spark.textContent = icon;
+        spark.style.left = `${18 + index * 16}%`;
+        spark.style.bottom = `${30 + (index % 2) * 18}px`;
+        card.appendChild(spark);
+        setTimeout(() => spark.remove(), 950);
+      });
+    }
 
     function renderSentence() {
-      const item = sentences[currentSentence % sentences.length];
-      answerTokens = [];
+      const item = theme().sentence;
+      sentenceTokens = [];
       document.getElementById("sentenceCn").textContent = item.cn;
       document.getElementById("sentenceFeedback").textContent = "";
+      document.getElementById("answerLine").innerHTML = "";
       const bank = document.getElementById("wordBank");
-      const answer = document.getElementById("answerLine");
       bank.innerHTML = "";
-      answer.innerHTML = "";
-      shuffle(item.bank).forEach(word => {
+      item.answer.forEach(word => {
         const token = document.createElement("button");
-        token.className = "token";
+        token.className = "token fan-token";
         token.textContent = word;
         token.addEventListener("click", () => {
-          answerTokens.push(word);
+          sentenceTokens.push(word);
           token.remove();
-          const answerToken = document.createElement("button");
-          answerToken.className = "token";
-          answerToken.textContent = word;
-          answerToken.addEventListener("click", () => renderSentence());
-          answer.appendChild(answerToken);
+          const placed = document.createElement("button");
+          placed.className = "token fan-token";
+          placed.textContent = word;
+          placed.addEventListener("click", renderSentence);
+          document.getElementById("answerLine").appendChild(placed);
         });
         bank.appendChild(token);
       });
     }
 
-    document.getElementById("checkSentence").addEventListener("click", () => {
-      const item = sentences[currentSentence % sentences.length];
-      const joined = answerTokens.join(" ");
-      const correct = item.answer.join(" ");
-      if (joined === correct) {
-        document.getElementById("sentenceFeedback").textContent = `拼对啦：${correct}. 奖励 15 分。`;
-        speak(correct);
-        updateScore(15);
+    function renderBadges() {
+      const badgeGrid = document.getElementById("badgeGrid");
+      badgeGrid.innerHTML = "";
+      themes.forEach(t => {
+        const unlocked = state.badges[t.id];
+        const div = document.createElement("div");
+        div.className = `badge ${unlocked ? "" : "locked"}`;
+        div.innerHTML = `<h3>${t.emoji} ${t.title}</h3><p>${unlocked ? "已解锁" : "完成朗读和表达后解锁"}</p>`;
+        badgeGrid.appendChild(div);
+      });
+    }
+
+    function renderWrong() {
+      const list = document.getElementById("wrongList");
+      if (!state.wrong.length) {
+        list.innerHTML = `<div class="map-note">当前没有错题。答错的题会自动进入这里，复习后还能加分。</div>`;
+        return;
+      }
+      list.innerHTML = state.wrong.map(item => `
+        <div class="review-item">
+          <b>${item.theme}</b>
+          <p>${item.text}</p>
+          <p class="muted">答案：${item.answer}</p>
+        </div>
+      `).join("");
+    }
+
+    function currentPronunciationItem() {
+      const words = theme().english;
+      return words[pronunciationIndex % words.length];
+    }
+
+    function renderPronunciation() {
+      const [en, phonetic, cn, emoji] = currentPronunciationItem();
+      document.getElementById("pronEmoji").textContent = emoji;
+      document.getElementById("pronTarget").textContent = en;
+      document.getElementById("pronPhonetic").textContent = phonetic;
+      document.getElementById("pronMeaning").textContent = cn;
+      document.getElementById("pronFeedback").textContent = "准备好后开始跟读。";
+    }
+
+    function normalizeEnglish(text) {
+      return (text || "").toLowerCase().replace(/[^a-z\s]/g, " ").replace(/\s+/g, " ").trim();
+    }
+
+    function recognitionAvailable() {
+      return window.SpeechRecognition || window.webkitSpeechRecognition;
+    }
+
+    function startSpeechRecognition(lang, onResult, onError) {
+      const SpeechRecognition = recognitionAvailable();
+      if (!SpeechRecognition) {
+        onError("当前浏览器不支持语音识别。可以用 Chrome 或 Edge 打开，并允许麦克风权限。");
+        return;
+      }
+      const recognition = new SpeechRecognition();
+      recognition.lang = lang;
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 3;
+      recognition.onresult = event => {
+        const result = Array.from(event.results[0] || []).map(item => item.transcript).join(" / ");
+        onResult(result);
+      };
+      recognition.onerror = () => onError("没有识别清楚。请靠近麦克风，再慢慢读一次。");
+      recognition.onnomatch = () => onError("没有匹配到读音。可以先点“听标准读音”再跟读。");
+      recognition.start();
+    }
+
+    function evaluatePronunciation(spokenText) {
+      const [en] = currentPronunciationItem();
+      const spoken = normalizeEnglish(spokenText);
+      const target = normalizeEnglish(en);
+      const feedback = document.getElementById("pronFeedback");
+      if (spoken === target || spoken.split(" ").includes(target)) {
+        feedback.textContent = `读得很准：${spokenText}。奖励 10 分。`;
+        addScore(10);
+        return;
+      }
+      const firstLetterMatch = spoken[0] && spoken[0] === target[0];
+      const similarLength = Math.abs(spoken.length - target.length) <= 2;
+      if (firstLetterMatch && similarLength) {
+        feedback.textContent = `接近了，系统听到：${spokenText}。再注意 ${en} 的尾音。奖励 4 分。`;
+        addScore(4);
+        return;
+      }
+      feedback.textContent = `还需要再练。系统听到：${spokenText}。目标单词是 ${en}。`;
+    }
+
+    function dialoguePrompts() {
+      const t = theme();
+      const first = t.english[0][0];
+      const second = t.english[1]?.[0] || first;
+      const sentence = t.sentence.answer.join(" ");
+      return [
+        {
+          ask: `Let's talk about ${t.title}. Can you say "${first}"?`,
+          expected: [normalizeEnglish(first)],
+          tip: `可以回答：${first}.`
+        },
+        {
+          ask: `Try a sentence with "${second}".`,
+          expected: [normalizeEnglish(second)],
+          tip: `可以说一句带有 ${second} 的英文。`
+        },
+        {
+          ask: `Can you read this sentence: "${sentence}"?`,
+          expected: sentence.split(" ").map(normalizeEnglish).filter(Boolean).slice(0, 3),
+          tip: `可以照着读：${sentence}.`
+        },
+        {
+          ask: `中文表达时间：${t.speaking}`,
+          expected: [],
+          tip: "这题重在表达。说完或输入后即可获得鼓励积分。"
+        }
+      ];
+    }
+
+    function appendDialogueBubble(role, text) {
+      const log = document.getElementById("dialogueLog");
+      const bubble = document.createElement("div");
+      bubble.className = `bubble ${role}`;
+      bubble.textContent = text;
+      log.appendChild(bubble);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function renderDialogue() {
+      const prompts = dialoguePrompts();
+      const prompt = prompts[dialogueIndex % prompts.length];
+      lastTeacherPrompt = prompt.ask;
+      const log = document.getElementById("dialogueLog");
+      log.innerHTML = "";
+      appendDialogueBubble("teacher", prompt.ask);
+      appendDialogueBubble("teacher", prompt.tip);
+      document.getElementById("dialogueInput").value = "";
+    }
+
+    function handleDialogueAnswer(answerText) {
+      const answer = answerText.trim();
+      if (!answer) return;
+      appendDialogueBubble("child", answer);
+      const prompt = dialoguePrompts()[dialogueIndex % dialoguePrompts().length];
+      const normalized = normalizeEnglish(answer);
+      const matched = !prompt.expected.length || prompt.expected.some(item => normalized.includes(item));
+      if (matched) {
+        appendDialogueBubble("teacher", "Good job. 这次回答有效，奖励 8 分。");
+        addScore(8);
       } else {
-        document.getElementById("sentenceFeedback").textContent = `再试一次。正确句子是：${correct}.`;
+        appendDialogueBubble("teacher", `再试一次也可以。提示：${prompt.tip}`);
+      }
+      document.getElementById("dialogueInput").value = "";
+    }
+
+    function renderAll() {
+      renderScore();
+      renderThemes();
+      renderTasks();
+      renderWords();
+      renderChinese();
+      renderQuestion();
+      renderSentence();
+      renderPronunciation();
+      renderDialogue();
+      renderBadges();
+      renderWrong();
+    }
+
+    document.getElementById("nextQuestion").addEventListener("click", () => {
+      currentQuestion += 1;
+      renderQuestion();
+    });
+
+    document.getElementById("reviewWrong").addEventListener("click", () => switchTab("achievements"));
+
+    document.getElementById("checkSentence").addEventListener("click", () => {
+      const correct = theme().sentence.answer.join(" ");
+      const answer = sentenceTokens.join(" ");
+      if (answer === correct) {
+        document.getElementById("sentenceFeedback").textContent = `拼对了：${correct}. 奖励 12 分。`;
         speak(correct);
+        addScore(12);
+      } else {
+        document.getElementById("sentenceFeedback").textContent = `顺序还不对。正确句子：${correct}.`;
       }
     });
 
     document.getElementById("resetSentence").addEventListener("click", renderSentence);
-    document.getElementById("newSentence").addEventListener("click", () => {
-      currentSentence += 1;
-      renderSentence();
+
+    document.getElementById("finishReading").addEventListener("click", () => {
+      addScore(8);
+      document.getElementById("readingPrompt").textContent = "朗读完成。可以继续做表达任务。";
     });
 
-    document.getElementById("sendTeacher").addEventListener("click", () => {
-      const input = document.getElementById("studentInput").value.trim();
-      const reply = document.getElementById("teacherReply");
-      if (!input) {
-        reply.textContent = "先输入一个英文单词或一句话吧。";
-        return;
-      }
-      const messages = [
-        `Great job! “${input}” 读得很棒。请再大声说一遍。`,
-        `Wonderful! 我听到了：${input}。你可以试试把它放进一个句子里。`,
-        `Nice try! 今天你又进步了一点点。跟我读：${input}.`
-      ];
-      const text = messages[Math.floor(Math.random() * messages.length)];
-      reply.textContent = text;
-      speak(input, "en-US");
-      updateScore(5);
+    document.getElementById("finishSpeaking").addEventListener("click", () => {
+      const t = theme();
+      state.badges[t.id] = true;
+      addScore(15);
+      renderBadges();
     });
 
-    document.getElementById("speakInput").addEventListener("click", () => {
-      const input = document.getElementById("studentInput").value.trim();
-      if (input) speak(input, "en-US");
+    document.getElementById("resetProgress").addEventListener("click", () => {
+      if (!confirm("确认清空本机学习进度吗？")) return;
+      state = { score: 0, stars: 0, mastered: {}, badges: {}, wrong: [] };
+      saveState();
+      renderAll();
     });
 
-    renderWords();
-    renderQuiz();
-    renderSentence();
+    document.getElementById("playPronunciation").addEventListener("click", () => {
+      speak(currentPronunciationItem()[0]);
+    });
+
+    document.getElementById("startPronunciation").addEventListener("click", () => {
+      document.getElementById("pronFeedback").textContent = "正在听，请清楚读出这个单词。";
+      startSpeechRecognition("en-US", evaluatePronunciation, message => {
+        document.getElementById("pronFeedback").textContent = message;
+      });
+    });
+
+    document.getElementById("nextPronunciation").addEventListener("click", () => {
+      pronunciationIndex += 1;
+      renderPronunciation();
+    });
+
+    document.getElementById("sendDialogue").addEventListener("click", () => {
+      handleDialogueAnswer(document.getElementById("dialogueInput").value);
+    });
+
+    document.getElementById("dialogueInput").addEventListener("keydown", event => {
+      if (event.key === "Enter") handleDialogueAnswer(event.target.value);
+    });
+
+    document.getElementById("speakDialogue").addEventListener("click", () => {
+      appendDialogueBubble("teacher", "我在听，请回答。");
+      startSpeechRecognition("en-US", text => {
+        document.getElementById("dialogueInput").value = text;
+        handleDialogueAnswer(text);
+      }, message => appendDialogueBubble("teacher", message));
+    });
+
+    document.getElementById("newDialogue").addEventListener("click", () => {
+      dialogueIndex += 1;
+      renderDialogue();
+    });
+
+    document.getElementById("repeatTeacher").addEventListener("click", () => {
+      if (lastTeacherPrompt) speak(lastTeacherPrompt);
+    });
+
+    renderAll();
   </script>
 </body>
 </html>
